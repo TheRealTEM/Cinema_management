@@ -1,0 +1,116 @@
+.root-pane {
+
+    -fx-background-color: #14071f;
+}
+
+.login-box {
+
+    -fx-background-color: #1b1028;
+
+    -fx-border-color: rgba(255,255,255,0.08);
+
+    -fx-border-width: 1;
+
+    -fx-background-radius: 10;
+
+    -fx-border-radius: 10;
+
+    -fx-padding: 35;
+
+    -fx-spacing: 15;
+
+    -fx-alignment: center;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(145,38,255,0.25),
+            35,
+            0.2,
+            0,
+            0
+    );
+}
+
+.app-name {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 26px;
+
+    -fx-font-weight: bold;
+}
+
+.login-title {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 18px;
+
+    -fx-font-weight: bold;
+}
+
+.input-field {
+
+    -fx-background-color: #241833;
+
+    -fx-text-fill: white;
+
+    -fx-prompt-text-fill: #8f87a1;
+
+    -fx-background-radius: 6;
+
+    -fx-font-size: 13px;
+}
+
+.login-button {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #9126ff,
+                    #c43cff
+            );
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 18px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 6;
+
+    -fx-cursor: hand;
+}
+
+.hyperlink {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-font-size: 11px;
+
+    -fx-border-color: transparent;
+}
+
+.label {
+
+    -fx-text-fill: white;
+}
+
+.separator .line {
+
+    -fx-border-color: rgba(255,255,255,0.15);
+}
+
+.login-button:hover {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #a93cff,
+                    #db5cff
+            );
+}
+
+.hyperlink {
+    -fx-cursor: hand;
+}
