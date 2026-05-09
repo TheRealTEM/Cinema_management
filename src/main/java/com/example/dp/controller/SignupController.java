@@ -11,10 +11,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
-public class LoginController {
+public class SignupController {
+
+    @FXML
+    private TextField fullNameField;
 
     @FXML
     private TextField emailField;
+
+    @FXML
+    private TextField phoneField;
 
     @FXML
     private PasswordField passwordField;
@@ -22,33 +28,43 @@ public class LoginController {
     private UserDAO userDAO = new UserDAO();
 
     @FXML
-    public void handleLogin() {
+    public void handleSignup() {
 
-        String email =
-                emailField.getText().trim();
+        User user = new User();
 
-        String password =
-                passwordField.getText().trim();
+        user.setFullName(
+                fullNameField.getText().trim()
+        );
 
+        user.setEmail(
+                emailField.getText().trim()
+        );
 
-        User user =
-                userDAO.login(email, password);
+        user.setPhone(
+                phoneField.getText().trim()
+        );
 
-        if(user != null) {
+        user.setPassword(
+                passwordField.getText().trim()
+        );
+
+        user.setRole("CUSTOMER");
+
+        user.setCustomerType("NORMAL");
+
+        boolean success =
+                userDAO.register(user);
+
+        if(success) {
 
             System.out.println(
-                    "Login Successful!"
-            );
-
-            System.out.println(
-                    "Welcome " +
-                            user.getFullName()
+                    "Account Created!"
             );
 
         } else {
 
             System.out.println(
-                    "Invalid Email or Password"
+                    "Signup Failed!"
             );
         }
     }
@@ -57,14 +73,14 @@ public class LoginController {
     private AnchorPane rootPane;
 
     @FXML
-    public void openSignup() {
+    public void openLogin() {
 
         try {
 
             FXMLLoader loader =
                     new FXMLLoader(
                             getClass().getResource(
-                                    "/view/signup.fxml"
+                                    "/view/login.fxml"
                             )
                     );
 

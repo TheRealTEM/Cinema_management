@@ -86,4 +86,59 @@ public class UserDAO {
         return null;
     }
 
+
+    public boolean register(User user) {
+
+        String query =
+                "INSERT INTO users " +
+                        "(full_name, email, password, phone, role, customer_type) " +
+                        "VALUES (?, ?, ?, ?, ?, ?)";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            statement.setString(
+                    1,
+                    user.getFullName()
+            );
+
+            statement.setString(
+                    2,
+                    user.getEmail()
+            );
+
+            statement.setString(
+                    3,
+                    user.getPassword()
+            );
+
+            statement.setString(
+                    4,
+                    user.getPhone()
+            );
+
+            statement.setString(
+                    5,
+                    user.getRole()
+            );
+
+            statement.setString(
+                    6,
+                    user.getCustomerType()
+            );
+
+            int rows =
+                    statement.executeUpdate();
+
+            return rows > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 }

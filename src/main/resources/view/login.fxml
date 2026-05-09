@@ -13,8 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="root-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dp.controller.LoginController">
+<AnchorPane fx:id="rootPane" prefHeight="600.0" prefWidth="900.0" styleClass="root-pane" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.dp.controller.LoginController">
    <children>
       <VBox alignment="CENTER" layoutX="335.0" layoutY="93.0" prefHeight="500.0" prefWidth="320.0" spacing="12.0" styleClass="login-box" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="290.0" AnchorPane.rightAnchor="290.0" AnchorPane.topAnchor="100.0">
          <children>
@@ -37,7 +36,7 @@
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Label prefHeight="23.0" prefWidth="124.0" text="Don't have an account?" />
-                  <Hyperlink text="Sigh Up" />
+                  <Hyperlink onAction="#openSignup" text="Sigh Up" />
                </children>
             </HBox>
          </children>
