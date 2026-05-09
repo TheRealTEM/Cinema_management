@@ -21,7 +21,7 @@ public class UserDAO {
     public User login(String email, String password) {
 
         String query =
-                "SELECT * FROM users WHERE email = ? AND password = ?";
+                "SELECT * FROM users WHERE LOWER(email) = LOWER(?) AND password = ?";
 
         try {
 
@@ -32,10 +32,15 @@ public class UserDAO {
 
             statement.setString(2, password);
 
+
+
+
             ResultSet resultSet =
                     statement.executeQuery();
 
             if(resultSet.next()) {
+
+
 
                 User user = new User();
 
@@ -69,12 +74,14 @@ public class UserDAO {
                         resultSet.getTimestamp("created_at")
                 );
 
+
                 return user;
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
 
         return null;
     }
