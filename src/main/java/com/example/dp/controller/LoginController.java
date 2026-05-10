@@ -36,14 +36,30 @@ public class LoginController {
 
         if(user != null) {
 
-            System.out.println(
-                    "Login Successful!"
-            );
+            try {
 
-            System.out.println(
-                    "Welcome " +
-                            user.getFullName()
-            );
+                FXMLLoader loader =
+                        new FXMLLoader(
+                                getClass().getResource(
+                                        "/view/dashboard.fxml"
+                                )
+                        );
+
+                Scene scene =
+                        new Scene(loader.load());
+
+                Stage stage =
+                        (Stage) rootPane
+                                .getScene()
+                                .getWindow();
+
+                stage.setScene(scene);
+
+                stage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
         } else {
 

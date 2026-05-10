@@ -114,3 +114,229 @@
 .hyperlink {
     -fx-cursor: hand;
 }
+
+.navbar {
+
+    -fx-background-color: #1b1028;
+
+    -fx-padding: 15;
+}
+
+.navbar .label {
+
+    -fx-text-fill: #b8b3c7;
+
+    -fx-font-size: 16px;
+
+    -fx-font-weight: bold;
+}
+
+.navbar .label:hover {
+
+    -fx-text-fill: #d27cff;
+
+    -fx-cursor: hand;
+}
+
+.active-navbar {
+
+    -fx-text-fill: #b14cff;
+}
+
+.movie-card {
+
+    -fx-background-color: #1b1028;
+
+    -fx-background-radius: 10;
+
+    -fx-border-radius: 10;
+
+    -fx-padding: 10;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(145,38,255,0.18),
+            20,
+            0.2,
+            0,
+            0
+    );
+}
+
+.movie-card .label {
+
+    -fx-text-fill: white;
+}
+
+.movies-scroll {
+
+    -fx-background: transparent;
+
+    -fx-background-color: transparent;
+}
+
+.movies-scroll > .viewport {
+
+    -fx-background-color: transparent;
+}
+
+.scroll-pane {
+
+    -fx-background-color: transparent;
+}
+
+.active-tab {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-font-weight: bold;
+}
+
+.navbar .label:hover {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-cursor: hand;
+}
+
+.movie-card {
+
+    -fx-background-color: #1a1026;
+
+    -fx-background-radius: 18;
+
+    -fx-border-radius: 18;
+
+    -fx-effect: dropshadow(
+            gaussian,
+            rgba(145,38,255,0.20),
+            25,
+            0.2,
+            0,
+            4
+    );
+}
+
+.movie-card:hover {
+
+    -fx-scale-x: 1.02;
+
+    -fx-scale-y: 1.02;
+
+    -fx-cursor: hand;
+}
+
+.movie-title {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+}
+
+.movie-duration {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.movie-genre {
+
+    -fx-text-fill: #8e8aa0;
+
+    -fx-font-size: 11px;}
+
+.next-show {
+
+    -fx-text-fill: #8e8aa0;
+
+    -fx-font-size: 15px;
+}
+
+.showtime {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-font-size: 16px;
+
+    -fx-font-weight: bold;
+}
+
+.book-button {
+
+    -fx-background-color: linear-gradient(
+            to right,
+            #9126ff,
+            #c144ff
+    );
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 12;
+
+    -fx-padding: 6 18 6 18;}
+
+.book-button:hover {
+
+    -fx-cursor: hand;
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #a93cff,
+                    #db5cff
+            );
+}
+
+.active-category {
+
+    -fx-text-fill: #b14cff;
+
+    -fx-font-size: 18px;
+
+    -fx-font-weight: bold;
+}
+
+.inactive-category {
+
+    -fx-text-fill: #b8b3c7;
+
+    -fx-font-size: 18px;
+
+    -fx-font-weight: bold;
+}
+
+.inactive-category:hover {
+
+    -fx-text-fill: #d27cff;
+
+    -fx-cursor: hand;
+}
+
+.active-category:hover {
+
+    -fx-cursor: hand;
+}
+
+.scroll-bar:vertical {
+
+    -fx-background-color: transparent;
+}
+
+.scroll-bar:vertical .thumb {
+
+    -fx-background-color: #9126ff;
+
+    -fx-background-radius: 10;
+}
+
+.scroll-bar:vertical .track {
+
+    -fx-background-color: transparent;
+}
