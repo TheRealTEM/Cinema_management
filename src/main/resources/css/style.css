@@ -340,3 +340,294 @@
 
     -fx-background-color: transparent;
 }
+
+.booking-page {
+
+    -fx-background-color: #13081c;
+}
+
+.booking-nav {
+
+    -fx-background-color: transparent;
+}
+
+.booking-nav .label {
+
+    -fx-text-fill: #918a9b;
+
+    -fx-font-size: 16px;
+
+    -fx-font-weight: bold;
+}
+
+.booking-nav .label:hover,
+.booking-nav .booking-nav-active {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-underline: true;
+
+    -fx-cursor: hand;
+}
+
+.booking-main {
+
+    -fx-background-color: #13081c;
+}
+
+.booking-theater-title {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 22px;
+
+    -fx-font-weight: bold;
+}
+
+.booking-movie-subtitle,
+.booking-date-time {
+
+    -fx-text-fill: #918a9b;
+
+    -fx-font-size: 20px;
+}
+
+.seat-grid .seat-button,
+.seat-grid .booked-seat-button,
+.seat-grid .selected-seat-button {
+
+    -fx-min-width: 31px;
+
+    -fx-min-height: 31px;
+
+    -fx-pref-width: 31px;
+
+    -fx-pref-height: 31px;
+
+    -fx-max-width: 31px;
+
+    -fx-max-height: 31px;
+
+    -fx-background-color: transparent;
+
+    -fx-border-color: #9828e8;
+
+    -fx-border-width: 1.25;
+
+    -fx-background-radius: 0;
+
+    -fx-border-radius: 0;
+
+    -fx-padding: 0;
+}
+
+.seat-grid .seat-button:hover,
+.seat-grid .booked-seat-button:hover,
+.seat-grid .selected-seat-button:hover {
+
+    -fx-background-color: rgba(168,44,255,0.18);
+
+    -fx-scale-x: 1.0;
+
+    -fx-scale-y: 1.0;
+}
+
+.seat-grid .selected-seat-button {
+
+    -fx-background-color: #a82cff;
+
+    -fx-border-color: #a82cff;
+}
+
+.seat-grid .booked-seat-button {
+
+    -fx-background-color: #e60026;
+
+    -fx-border-color: #e60026;
+}
+
+.seat-legend {
+
+    -fx-background-color: #211a29;
+
+    -fx-background-radius: 2;
+}
+
+.legend-seat-available {
+
+    -fx-background-color: #a7adb0;
+
+    -fx-border-color: #9828e8;
+
+    -fx-border-width: 1.25;
+}
+
+.legend-seat-booked {
+
+    -fx-background-color: #e60026;
+
+    -fx-border-color: #9828e8;
+
+    -fx-border-width: 1.25;
+}
+
+.legend-seat-selected {
+
+    -fx-background-color: #a82cff;
+}
+
+.legend-text {
+
+    -fx-text-fill: #918a9b;
+
+    -fx-font-size: 13px;
+}
+
+.booked-legend-text,
+.selected-legend-text {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 13px;
+}
+
+.booking-sidebar {
+
+    -fx-background-color: #190d22;
+
+    -fx-border-color: transparent;
+}
+
+.booking-movie-card {
+
+    -fx-background-color: #241b2b;
+
+    -fx-background-radius: 5;
+}
+
+.sidebar-title {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 21px;
+
+    -fx-font-weight: bold;
+}
+
+.sidebar-muted {
+
+    -fx-text-fill: #b3adb9;
+
+    -fx-font-size: 12px;
+}
+
+.sidebar-muted-small {
+
+    -fx-text-fill: #918a9b;
+
+    -fx-font-size: 10px;
+}
+
+.sidebar-accent-small {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 10px;
+}
+
+.summary-seat-title,
+.summary-price,
+.total-label {
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 14px;
+}
+
+.summary-seat-subtitle {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 13px;
+}
+
+.summary-divider {
+
+    -fx-min-height: 2px;
+
+    -fx-pref-height: 2px;
+
+    -fx-background-color: #241b2b;
+}
+
+.snack-button {
+
+    -fx-background-color: transparent;
+
+    -fx-border-color: #a82cff;
+
+    -fx-border-width: 1;
+
+    -fx-border-radius: 3;
+
+    -fx-background-radius: 3;
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 13px;
+
+    -fx-cursor: hand;
+}
+
+.snack-button:hover {
+
+    -fx-background-color: rgba(168,44,255,0.12);
+}
+
+.total-value {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+}
+
+.booking-pay-button {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #9126ff,
+                    #c43cff
+            );
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 14px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 3;
+
+    -fx-cursor: hand;
+}
+
+.booking-pay-button:hover {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #a93cff,
+                    #db5cff
+            );
+}
+
+.hold-message {
+
+    -fx-text-fill: #a82cff;
+
+    -fx-font-size: 13px;
+
+    -fx-font-weight: bold;
+}

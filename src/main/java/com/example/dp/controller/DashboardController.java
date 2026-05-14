@@ -6,6 +6,12 @@ import com.example.dp.model.Movie;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
+
+
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
@@ -147,6 +153,38 @@ public class DashboardController
                 new Button(
                         "Book now"
                 );
+
+        button.setOnAction(e -> {
+
+            try {
+
+                FXMLLoader loader =
+                        new FXMLLoader(
+                                getClass().getResource(
+                                        "/view/booking.fxml"
+                                )
+                        );
+
+                Scene scene =
+                        new Scene(loader.load());
+
+                BookingController controller =
+                        loader.getController();
+
+                controller.setMovie(movie);
+
+                Stage stage =
+                        (Stage) button
+                                .getScene()
+                                .getWindow();
+
+                stage.setScene(scene);
+
+            } catch (Exception ex) {
+
+                ex.printStackTrace();
+            }
+        });
 
         button.getStyleClass()
                 .add("book-button");
