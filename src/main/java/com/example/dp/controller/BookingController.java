@@ -1,28 +1,53 @@
 package com.example.dp.controller;
 
+import com.example.dp.dao.ShowtimeDAO;
+import com.example.dp.model.BookingShowtime;
+import com.example.dp.model.Movie;
+import com.example.dp.state.*;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.example.dp.model.Movie;
-import javafx.scene.image.Image;
-import com.example.dp.state.*;
 
 public class BookingController {
 
     private Movie selectedMovie;
 
+    private BookingShowtime selectedShowtime;
+
+    private final ShowtimeDAO showtimeDAO =
+            new ShowtimeDAO();
+
+    private final DateTimeFormatter dateFormatter =
+            DateTimeFormatter.ofPattern("dd - MM - yyyy");
+
+    private final DateTimeFormatter timeFormatter =
+            DateTimeFormatter.ofPattern("HH:mm");
+
     @FXML
     private HBox seatContainer;
+
+    @FXML
+    private Label theaterTitleLabel;
+
+    @FXML
+    private Label headerMovieTitleLabel;
+
+    @FXML
+    private Label showDateLabel;
+
+    @FXML
+    private Label showTimeLabel;
 
     @FXML
     private ImageView moviePosterImageView;
@@ -37,6 +62,9 @@ public class BookingController {
     private Label durationLabel;
 
     @FXML
+    private Label nextShowLabel;
+
+    @FXML
     private Label totalPriceLabel;
 
     @FXML
@@ -45,7 +73,7 @@ public class BookingController {
     private final List<String> selectedSeats =
             new ArrayList<>();
 
-    private final int seatPrice = 15;
+    private double seatPrice = 15;
 
     @FXML
     public void initialize() {
@@ -102,12 +130,12 @@ public class BookingController {
 
     private void updateSummary() {
 
-        int total =
+        double total =
                 selectedSeats.size()
                         * seatPrice;
 
         totalPriceLabel.setText(
-                "$" + total
+                formatPrice(total)
         );
 
         if(selectedSeats.isEmpty()) {
@@ -247,6 +275,10 @@ public class BookingController {
 
         selectedMovie = movie;
 
+        headerMovieTitleLabel.setText(
+                movie.getTitle()
+        );
+
         movieTitleLabel.setText(
                 movie.getTitle()
         );
@@ -266,5 +298,83 @@ public class BookingController {
                 );
 
         moviePosterImageView.setImage(image);
+
+        loadShowtimeDetails(movie);
+    }
+
+    private void loadShowtimeDetails(
+            Movie movie
+    ) {
+        selectedShowtime =
+                showtimeDAO
+                        .getNextAvailableShowtimeByMovieId(
+                                movie.getId()
+                        );
+
+        if(selectedShowtime == null) {
+            theaterTitleLabel.setText(
+                    "No showtime available"
+            );
+
+            showDateLabel.setText(
+                    "-- - -- - ----"
+            );
+
+            showTimeLabel.setText(
+                    "--:-- - --:--"
+            );
+
+            nextShowLabel.setText(
+                    "No upcoming show"
+            );
+
+            return;
+        }
+
+        seatPrice =
+                selectedShowtime.getBasePrice();
+
+        theaterTitleLabel.setText(
+                selectedShowtime.getHallName()
+        );
+
+        showDateLabel.setText(
+                selectedShowtime
+                        .getStartTime()
+                        .format(dateFormatter)
+        );
+
+        showTimeLabel.setText(
+                selectedShowtime
+                        .getStartTime()
+                        .format(timeFormatter)
+                        + " - " +
+                        selectedShowtime
+                                .getEndTime()
+                                .format(timeFormatter)
+        );
+
+        nextShowLabel.setText(
+                selectedShowtime
+                        .getStartTime()
+                        .format(timeFormatter)
+                        + " " +
+                        selectedShowtime.getHallName()
+        );
+
+        updateSummary();
+    }
+
+    private String formatPrice(
+            double price
+    ) {
+        if(price == Math.rint(price)) {
+            return "$" + (int) price;
+        }
+
+        return String.format(
+                "$%.2f",
+                price
+        );
     }
 }

@@ -70,10 +70,12 @@
 
                     <children>
 
-                        <Label styleClass="booking-theater-title"
+                        <Label fx:id="theaterTitleLabel"
+                               styleClass="booking-theater-title"
                                text="Theater #"/>
 
-                        <Label styleClass="booking-movie-subtitle"
+                        <Label fx:id="headerMovieTitleLabel"
+                               styleClass="booking-movie-subtitle"
                                text="Movie name"/>
 
                     </children>
@@ -85,10 +87,12 @@
 
                     <children>
 
-                        <Label styleClass="booking-date-time"
+                        <Label fx:id="showDateLabel"
+                               styleClass="booking-date-time"
                                text="DD - MM - 20YY"/>
 
-                        <Label styleClass="booking-date-time"
+                        <Label fx:id="showTimeLabel"
+                               styleClass="booking-date-time"
                                text="##:## - ##:##"/>
 
                     </children>
@@ -235,7 +239,8 @@
                                 <Label styleClass="sidebar-muted-small"
                                        text="Next Show"/>
 
-                                <Label styleClass="sidebar-accent-small"
+                                <Label fx:id="nextShowLabel"
+                                       styleClass="sidebar-accent-small"
                                        text="00:00 Screen #"/>
 
                             </children>
