@@ -132,12 +132,18 @@ public class DashboardController
 
         poster.setPreserveRatio(false);
 
-        Image image =
-                new Image(
-                        movie.getPosterPath()
-                );
-
-        poster.setImage(image);
+        try {
+            String path = movie.getPosterPath();
+            if (path != null && !path.trim().isEmpty()) {
+                if (!path.startsWith("http") && !path.startsWith("file:")) {
+                    path = "file:" + path;
+                }
+                Image image = new Image(path, true); // true for background loading
+                poster.setImage(image);
+            }
+        } catch (Exception e) {
+            System.err.println("Could not load poster for movie: " + movie.getTitle());
+        }
 
         VBox content =
                 new VBox();

@@ -9,13 +9,11 @@ public class AvailableState
     public void handleClick(
             Button seatButton
     ) {
-
         seatButton.getProperties()
                 .put(
                         "state",
                         new SelectedState()
                 );
-
         seatButton.getStyleClass()
                 .removeAll(
                         "seat-button",
