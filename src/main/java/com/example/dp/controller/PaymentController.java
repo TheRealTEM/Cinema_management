@@ -1,6 +1,8 @@
 package com.example.dp.controller;
 
 import com.example.dp.facade.BookingFacade;
+import com.example.dp.dao.BookingDAO;
+import com.example.dp.dao.SeatDAO;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -24,6 +26,14 @@ public class PaymentController {
 
     @FXML
     private Button confirmPaymentButton;
+
+    private int showtimeId;
+
+    private final BookingDAO bookingDAO =
+            new BookingDAO();
+
+    private final SeatDAO seatDAO =
+            new SeatDAO();
 
     @FXML
     public void initialize() {
@@ -53,24 +63,68 @@ public class PaymentController {
             return;
         }
 
-        BookingFacade facade =
-                new BookingFacade();
+        double total =
+                Double.parseDouble(
+                        totalLabel
+                                .getText()
+                                .replace("$", "")
+                );
 
-        facade.completeBooking(
-                30,
-                paymentMethod
-        );
+        int bookingId =
+                bookingDAO.createBooking(
+                        1,
+                        showtimeId,
+                        total
+                );
+
+        if(bookingId == -1) {
+
+            System.out.println(
+                    "Booking failed"
+            );
+
+            return;
+        }
+
+        String seatsText =
+                seatsLabel
+                        .getText()
+                        .replace("Seats: ", "");
+
+        String[] seats =
+                seatsText.split(", ");
+
+        for(String seat : seats) {
+
+            int seatId =
+                    seatDAO.getSeatIdBySeatNumber(
+                            seat
+                    );
+
+            if(seatId != -1) {
+
+                bookingDAO.saveBookedSeat(
+                        bookingId,
+                        showtimeId,
+                        seatId
+                );
+            }
+        }
 
         System.out.println(
-                "Payment completed"
+                "Booking saved successfully"
         );
     }
 
     public void setPaymentData(
             String movieName,
             String seats,
-            double total
+            double total,
+            int showtimeId
     ) {
+
+        this.showtimeId =
+                showtimeId;
 
         movieTitleLabel.setText(
                 movieName

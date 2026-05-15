@@ -8,6 +8,7 @@ import com.example.dp.state.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import com.example.dp.dao.BookingDAO;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -93,6 +94,9 @@ public class BookingController {
 
         updateSummary();
     }
+
+    private final BookingDAO bookingDAO =
+            new BookingDAO();
 
 
     @FXML
@@ -183,7 +187,8 @@ public class BookingController {
             controller.setPaymentData(
                     selectedMovie.getTitle(),
                     selectedSeatsLabel.getText(),
-                    selectedSeats.size() * seatPrice
+                    selectedSeats.size() * seatPrice,
+                    selectedShowtime.getId()
             );
 
             Stage stage =
@@ -342,6 +347,38 @@ public class BookingController {
                         .toLocalTime()
                         .toString()
         );
+        loadBookedSeats();
+    }
+
+    private void loadBookedSeats() {
+
+        List<String> bookedSeats =
+                bookingDAO.getBookedSeats(
+                        selectedShowtime.getId()
+                );
+
+        for(javafx.scene.Node node :
+                seatContainer.lookupAll(".button")) {
+
+            if(node instanceof Button seatButton) {
+
+                String seatId =
+                        seatButton.getId();
+
+                if(bookedSeats.contains(
+                        seatId
+                )) {
+
+                    seatButton.setStyle(
+                            "-fx-background-color: red;"
+                    );
+
+                    seatButton.setDisable(
+                            true
+                    );
+                }
+            }
+        }
     }
 
 
@@ -358,4 +395,6 @@ public class BookingController {
                 price
         );
     }
+
+
 }
