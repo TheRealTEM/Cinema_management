@@ -5,7 +5,6 @@ public class CardPaymentStrategy
 
     @Override
     public void pay(double amount) {
-
         System.out.println(
                 "Paid "
                         + amount

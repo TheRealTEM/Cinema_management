@@ -1,6 +1,5 @@
 package com.example.dp.controller;
 
-import com.example.dp.facade.BookingFacade;
 import com.example.dp.dao.BookingDAO;
 import com.example.dp.dao.SeatDAO;
 

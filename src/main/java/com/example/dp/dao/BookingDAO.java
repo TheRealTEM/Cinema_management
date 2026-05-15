@@ -1,6 +1,7 @@
 package com.example.dp.dao;
 
 import com.example.dp.database.DatabaseConnection;
+import com.example.dp.model.Booking;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,20 +36,9 @@ public class BookingDAO {
                             PreparedStatement.RETURN_GENERATED_KEYS
                     );
 
-            statement.setInt(
-                    1,
-                    userId
-            );
-
-            statement.setInt(
-                    2,
-                    showtimeId
-            );
-
-            statement.setDouble(
-                    3,
-                    totalAmount
-            );
+            statement.setInt(1, userId);
+            statement.setInt(2, showtimeId);
+            statement.setDouble(3, totalAmount);
 
             statement.executeUpdate();
 
@@ -56,12 +46,10 @@ public class BookingDAO {
                     statement.getGeneratedKeys();
 
             if(resultSet.next()) {
-
                 return resultSet.getInt(1);
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
@@ -82,39 +70,22 @@ public class BookingDAO {
         try {
 
             PreparedStatement statement =
-                    connection.prepareStatement(
-                            query
-                    );
+                    connection.prepareStatement(query);
 
-            statement.setInt(
-                    1,
-                    bookingId
-            );
-
-            statement.setInt(
-                    2,
-                    showtimeId
-            );
-
-            statement.setInt(
-                    3,
-                    seatId
-            );
+            statement.setInt(1, bookingId);
+            statement.setInt(2, showtimeId);
+            statement.setInt(3, seatId);
 
             statement.executeUpdate();
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
     }
 
-    public List<String> getBookedSeats(
-            int showtimeId
-    ) {
+    public List<String> getBookedSeats(int showtimeId) {
 
-        List<String> bookedSeats =
-                new ArrayList<>();
+        List<String> bookedSeats = new ArrayList<>();
 
         String query =
                 "SELECT s.seat_row, s.seat_number " +
@@ -125,39 +96,155 @@ public class BookingDAO {
         try {
 
             PreparedStatement statement =
-                    connection.prepareStatement(
-                            query
-                    );
+                    connection.prepareStatement(query);
 
-            statement.setInt(
-                    1,
-                    showtimeId
-            );
+            statement.setInt(1, showtimeId);
 
-            ResultSet resultSet =
-                    statement.executeQuery();
+            ResultSet resultSet = statement.executeQuery();
 
             while(resultSet.next()) {
-
-                String seat =
-                        resultSet.getString(
-                                "seat_row"
-                        )
-                                +
-                                resultSet.getInt(
-                                        "seat_number"
-                                );
-
-                bookedSeats.add(
-                        seat
-                );
+                String seat = resultSet.getString("seat_row")
+                        + resultSet.getInt("seat_number");
+                bookedSeats.add(seat);
             }
 
         } catch (Exception e) {
-
             e.printStackTrace();
         }
 
         return bookedSeats;
+    }
+
+    // Methods used by AdminDashboardController
+
+    public Booking getBookingById(int bookingId) {
+        String query = "SELECT * FROM bookings WHERE id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, bookingId);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return new Booking.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setUserId(resultSet.getInt("user_id"))
+                        .setShowtimeId(resultSet.getInt("showtime_id"))
+                        .setBookingDate(resultSet.getTimestamp("booking_date"))
+                        .setTotalAmount(resultSet.getDouble("total_amount"))
+                        .setBookingStatus(resultSet.getString("booking_status"))
+                        .build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public int getTotalBookingsCount() {
+        String query = "SELECT COUNT(*) as count FROM bookings";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getPendingBookingsCount() {
+        String query = "SELECT COUNT(*) as count FROM bookings WHERE booking_status = 'PENDING'";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public List<Booking> getRecentBookings(int limit) {
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings ORDER BY booking_date DESC LIMIT ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setInt(1, limit);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                bookings.add(new Booking.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setUserId(resultSet.getInt("user_id"))
+                        .setShowtimeId(resultSet.getInt("showtime_id"))
+                        .setBookingDate(resultSet.getTimestamp("booking_date"))
+                        .setTotalAmount(resultSet.getDouble("total_amount"))
+                        .setBookingStatus(resultSet.getString("booking_status"))
+                        .build());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    public List<Booking> getAllBookings() {
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                bookings.add(new Booking.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setUserId(resultSet.getInt("user_id"))
+                        .setShowtimeId(resultSet.getInt("showtime_id"))
+                        .setBookingDate(resultSet.getTimestamp("booking_date"))
+                        .setTotalAmount(resultSet.getDouble("total_amount"))
+                        .setBookingStatus(resultSet.getString("booking_status"))
+                        .build());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    public List<Booking> getBookingsByStatus(String status) {
+        List<Booking> bookings = new ArrayList<>();
+        String query = "SELECT * FROM bookings WHERE booking_status = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, status);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                bookings.add(new Booking.Builder()
+                        .setId(resultSet.getInt("id"))
+                        .setUserId(resultSet.getInt("user_id"))
+                        .setShowtimeId(resultSet.getInt("showtime_id"))
+                        .setBookingDate(resultSet.getTimestamp("booking_date"))
+                        .setTotalAmount(resultSet.getDouble("total_amount"))
+                        .setBookingStatus(resultSet.getString("booking_status"))
+                        .build());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return bookings;
+    }
+
+    public boolean updateBookingStatus(int bookingId, String status) {
+        String query = "UPDATE bookings SET booking_status = ? WHERE id = ?";
+        try {
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setString(1, status);
+            statement.setInt(2, bookingId);
+            return statement.executeUpdate() > 0;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

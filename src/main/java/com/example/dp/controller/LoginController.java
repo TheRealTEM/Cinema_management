@@ -37,11 +37,14 @@ public class LoginController {
         if(user != null) {
 
             try {
+                String fxmlPath = user.getRole() != null && user.getRole().equalsIgnoreCase("ADMIN")
+                        ? "/view/admin-dashboard.fxml"
+                        : "/view/dashboard.fxml";
 
                 FXMLLoader loader =
                         new FXMLLoader(
                                 getClass().getResource(
-                                        "/view/dashboard.fxml"
+                                        fxmlPath
                                 )
                         );
 
