@@ -3,7 +3,12 @@ package com.example.dp.controller;
 import com.example.dp.dao.ShowtimeDAO;
 import com.example.dp.model.BookingShowtime;
 import com.example.dp.model.Movie;
+import com.example.dp.model.Showtime;
 import com.example.dp.state.*;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -159,28 +164,40 @@ public class BookingController {
     @FXML
     public void handlePayment() {
 
-        if(selectedSeats.isEmpty()) {
+        try {
 
-            System.out.println(
-                    "Select at least one seat!"
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/view/payment.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(
+                            loader.load()
+                    );
+
+            PaymentController controller =
+                    loader.getController();
+
+            controller.setPaymentData(
+                    selectedMovie.getTitle(),
+                    selectedSeatsLabel.getText(),
+                    selectedSeats.size() * seatPrice
             );
 
-            return;
+            Stage stage =
+                    (Stage) totalPriceLabel
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
         }
-
-        System.out.println(
-                "Proceeding to payment..."
-        );
-
-        System.out.println(
-                "Selected Seats: " +
-                        selectedSeats
-        );
-
-        System.out.println(
-                "Total Price: $" +
-                        (selectedSeats.size() * seatPrice)
-        );
     }
 
     private void generateSeats() {
@@ -271,7 +288,10 @@ public class BookingController {
                 );
     }
 
-    public void setMovie(Movie movie) {
+    public void setMovie(
+            Movie movie,
+            Showtime showtime
+    ) {
 
         selectedMovie = movie;
 
@@ -299,7 +319,28 @@ public class BookingController {
 
         moviePosterImageView.setImage(image);
 
-        loadShowtimeDetails(movie);
+        theaterTitleLabel.setText(
+                "Hall "
+                        + showtime.getHallId()
+        );
+
+        showDateLabel.setText(
+                showtime.getStartTime()
+                        .toLocalDate()
+                        .toString()
+        );
+
+        showTimeLabel.setText(
+                showtime.getStartTime()
+                        .toLocalTime()
+                        .toString()
+        );
+
+        nextShowLabel.setText(
+                showtime.getStartTime()
+                        .toLocalTime()
+                        .toString()
+        );
     }
 
     private void loadShowtimeDetails(

@@ -1,5 +1,6 @@
 package com.example.dp.model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 public class Showtime {
@@ -14,30 +15,9 @@ public class Showtime {
 
     private LocalDateTime endTime;
 
-    private double basePrice;
+    private BigDecimal basePrice;
 
     private String status;
-
-    public Showtime() {
-    }
-
-    public Showtime(
-            int id,
-            int movieId,
-            int hallId,
-            LocalDateTime startTime,
-            LocalDateTime endTime,
-            double basePrice,
-            String status
-    ) {
-        this.id = id;
-        this.movieId = movieId;
-        this.hallId = hallId;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.basePrice = basePrice;
-        this.status = status;
-    }
 
     public int getId() {
         return id;
@@ -67,7 +47,9 @@ public class Showtime {
         return startTime;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
+    public void setStartTime(
+            LocalDateTime startTime
+    ) {
         this.startTime = startTime;
     }
 
@@ -75,15 +57,19 @@ public class Showtime {
         return endTime;
     }
 
-    public void setEndTime(LocalDateTime endTime) {
+    public void setEndTime(
+            LocalDateTime endTime
+    ) {
         this.endTime = endTime;
     }
 
-    public double getBasePrice() {
+    public BigDecimal getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(double basePrice) {
+    public void setBasePrice(
+            BigDecimal basePrice
+    ) {
         this.basePrice = basePrice;
     }
 

@@ -631,3 +631,35 @@
 
     -fx-font-weight: bold;
 }
+
+.showtime-button {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #9126ff,
+                    #c43cff
+            );
+
+    -fx-text-fill: white;
+
+    -fx-font-size: 12px;
+
+    -fx-font-weight: bold;
+
+    -fx-background-radius: 8;
+
+    -fx-cursor: hand;
+
+    -fx-padding: 6 16 6 16;
+}
+
+.showtime-button:hover {
+
+    -fx-background-color:
+            linear-gradient(
+                    to right,
+                    #a93cff,
+                    #db5cff
+            );
+}

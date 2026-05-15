@@ -1,129 +1,199 @@
 package com.example.dp.dao;
 
 import com.example.dp.database.DatabaseConnection;
+import com.example.dp.model.Showtime;
 import com.example.dp.model.BookingShowtime;
+
+import java.math.BigDecimal;
+
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
+
+import java.time.LocalDateTime;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ShowtimeDAO {
 
-    private final Connection connection;
+    private Connection connection;
 
     public ShowtimeDAO() {
+
         connection =
                 DatabaseConnection
                         .getInstance()
                         .getConnection();
     }
 
-    public BookingShowtime getNextAvailableShowtimeByMovieId(
+    
+
+    public List<Showtime> getShowtimesByMovie(
             int movieId
     ) {
-        BookingShowtime showtime =
-                findShowtime(movieId, true);
 
-        if(showtime == null) {
-            showtime =
-                    findShowtime(movieId, false);
-        }
+        List<Showtime> showtimes =
+                new ArrayList<>();
 
-        return showtime;
-    }
-
-    private BookingShowtime findShowtime(
-            int movieId,
-            boolean futureOnly
-    ) {
         String query =
-                "SELECT " +
-                        "showtimes.id, " +
-                        "showtimes.start_time, " +
-                        "showtimes.end_time, " +
-                        "showtimes.base_price, " +
-                        "cinema_halls.hall_name, " +
-                        "cinema_halls.screen_type " +
-                "FROM showtimes " +
-                "JOIN cinema_halls " +
-                        "ON cinema_halls.id = showtimes.hall_id " +
-                "WHERE showtimes.movie_id = ? " +
-                        "AND showtimes.status = 'AVAILABLE' ";
+                "SELECT * FROM showtimes " +
+                        "WHERE movie_id = ? " +
+                        "AND status = 'AVAILABLE'";
 
-        if(futureOnly) {
-            query +=
-                    "AND showtimes.start_time >= NOW() ";
-        }
+        try {
 
-        query +=
-                "ORDER BY showtimes.start_time ASC " +
-                "LIMIT 1";
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
 
-        try(PreparedStatement statement =
-                    connection.prepareStatement(query)) {
+            statement.setInt(
+                    1,
+                    movieId
+            );
 
-            statement.setInt(1, movieId);
+            ResultSet resultSet =
+                    statement.executeQuery();
 
-            try(ResultSet resultSet =
-                        statement.executeQuery()) {
+            while(resultSet.next()) {
 
-                if(resultSet.next()) {
-                    return mapBookingShowtime(resultSet);
-                }
+                Showtime showtime =
+                        new Showtime();
+
+                showtime.setId(
+                        resultSet.getInt("id")
+                );
+
+                showtime.setMovieId(
+                        resultSet.getInt("movie_id")
+                );
+
+                showtime.setHallId(
+                        resultSet.getInt("hall_id")
+                );
+
+                showtime.setStartTime(
+                        resultSet.getTimestamp(
+                                "start_time"
+                        ).toLocalDateTime()
+                );
+
+                showtime.setEndTime(
+                        resultSet.getTimestamp(
+                                "end_time"
+                        ).toLocalDateTime()
+                );
+
+                showtime.setBasePrice(
+                        resultSet.getBigDecimal(
+                                "base_price"
+                        )
+                );
+
+                showtime.setStatus(
+                        resultSet.getString(
+                                "status"
+                        )
+                );
+
+                showtimes.add(showtime);
             }
 
         } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return showtimes;
+    }
+
+    public BookingShowtime
+    getNextAvailableShowtimeByMovieId(
+            int movieId
+    ) {
+
+        String query =
+                "SELECT " +
+                        "showtimes.id, " +
+                        "cinema_halls.name AS hall_name, " +
+                        "cinema_halls.screen_type, " +
+                        "showtimes.start_time, " +
+                        "showtimes.end_time, " +
+                        "showtimes.base_price " +
+                        "FROM showtimes " +
+                        "JOIN cinema_halls " +
+                        "ON showtimes.hall_id = cinema_halls.id " +
+                        "WHERE showtimes.movie_id = ? " +
+                        "AND showtimes.status = 'AVAILABLE' " +
+                        "ORDER BY showtimes.start_time ASC " +
+                        "LIMIT 1";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
+
+            statement.setInt(
+                    1,
+                    movieId
+            );
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            if(resultSet.next()) {
+
+                BookingShowtime showtime =
+                        new BookingShowtime();
+
+                showtime.setId(
+                        resultSet.getInt("id")
+                );
+
+                showtime.setHallName(
+                        resultSet.getString(
+                                "hall_name"
+                        )
+                );
+
+                showtime.setScreenType(
+                        resultSet.getString(
+                                "screen_type"
+                        )
+                );
+
+                showtime.setStartTime(
+                        resultSet.getTimestamp(
+                                "start_time"
+                        ).toLocalDateTime()
+                );
+
+                showtime.setEndTime(
+                        resultSet.getTimestamp(
+                                "end_time"
+                        ).toLocalDateTime()
+                );
+
+                showtime.setBasePrice(
+                        resultSet.getDouble(
+                                "base_price"
+                        )
+                );
+
+                return showtime;
+            }
+
+        } catch (Exception e) {
+
             e.printStackTrace();
         }
 
         return null;
     }
 
-    private BookingShowtime mapBookingShowtime(
-            ResultSet resultSet
-    ) throws Exception {
-        BookingShowtime showtime =
-                new BookingShowtime();
 
-        showtime.setId(
-                resultSet.getInt("id")
-        );
-
-        showtime.setHallName(
-                resultSet.getString("hall_name")
-        );
-
-        showtime.setScreenType(
-                resultSet.getString("screen_type")
-        );
-
-        showtime.setStartTime(
-                toLocalDateTime(
-                        resultSet.getTimestamp("start_time")
-                )
-        );
-
-        showtime.setEndTime(
-                toLocalDateTime(
-                        resultSet.getTimestamp("end_time")
-                )
-        );
-
-        showtime.setBasePrice(
-                resultSet.getDouble("base_price")
-        );
-
-        return showtime;
-    }
-
-    private java.time.LocalDateTime toLocalDateTime(
-            Timestamp timestamp
-    ) {
-        if(timestamp == null) {
-            return null;
-        }
-
-        return timestamp.toLocalDateTime();
-    }
 }

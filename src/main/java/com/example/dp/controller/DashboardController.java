@@ -10,6 +10,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import com.example.dp.dao.ShowtimeDAO;
+import com.example.dp.model.Showtime;
+
+import java.time.format.DateTimeFormatter;
 
 
 import javafx.scene.control.Button;
@@ -33,6 +37,9 @@ public class DashboardController
 
     private MovieDAO movieDAO =
             new MovieDAO();
+
+    private ShowtimeDAO showtimeDAO =
+            new ShowtimeDAO();
 
     @Override
     public void initialize(
@@ -141,67 +148,80 @@ public class DashboardController
         nextShow.getStyleClass()
                 .add("next-show");
 
-        Label showtime =
-                new Label(
-                        "00:00 Screen #"
+
+
+        VBox showtimesBox =
+                new VBox();
+
+        showtimesBox.setSpacing(6);
+
+        List<Showtime> showtimes =
+                showtimeDAO.getShowtimesByMovie(
+                        movie.getId()
                 );
 
-        showtime.getStyleClass()
-                .add("showtime");
-
-        Button button =
-                new Button(
-                        "Book now"
+        DateTimeFormatter formatter =
+                DateTimeFormatter.ofPattern(
+                        "hh:mm a"
                 );
 
-        button.setOnAction(e -> {
+        for(Showtime showtime : showtimes) {
 
-            try {
+            Button showtimeButton =
+                    new Button(
+                            showtime.getStartTime()
+                                    .format(formatter)
+                    );
 
-                FXMLLoader loader =
-                        new FXMLLoader(
-                                getClass().getResource(
-                                        "/view/booking.fxml"
-                                )
-                        );
+            showtimeButton.getStyleClass()
+                    .add("showtime-button");
 
-                Scene scene =
-                        new Scene(loader.load());
+            showtimeButton.setOnAction(e -> {
 
-                BookingController controller =
-                        loader.getController();
+                try {
 
-                controller.setMovie(movie);
+                    FXMLLoader loader =
+                            new FXMLLoader(
+                                    getClass().getResource(
+                                            "/view/booking.fxml"
+                                    )
+                            );
 
-                Stage stage =
-                        (Stage) button
-                                .getScene()
-                                .getWindow();
+                    Scene scene =
+                            new Scene(loader.load());
 
-                stage.setScene(scene);
+                    BookingController controller =
+                            loader.getController();
 
-            } catch (Exception ex) {
+                    controller.setMovie(
+                            movie,
+                            showtime
+                    );
 
-                ex.printStackTrace();
-            }
-        });
+                    Stage stage =
+                            (Stage) showtimeButton
+                                    .getScene()
+                                    .getWindow();
 
-        button.getStyleClass()
-                .add("book-button");
+                    stage.setScene(scene);
 
-        HBox buttonBox =
-                new HBox(button);
+                } catch (Exception ex) {
 
-        buttonBox.setStyle(
-                "-fx-alignment: center-right;"
-        );
+                    ex.printStackTrace();
+                }
+            });
+
+            showtimesBox.getChildren()
+                    .add(showtimeButton);
+        }
+
 
         content.getChildren().addAll(
                 titleRow,
                 genre,
                 nextShow,
-                showtime,
-                buttonBox
+                showtimesBox
+
         );
 
         card.getChildren().addAll(
