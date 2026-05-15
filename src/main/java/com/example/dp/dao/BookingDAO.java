@@ -9,6 +9,8 @@ import java.util.List;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
 
 public class BookingDAO {
 
@@ -246,5 +248,86 @@ public class BookingDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public List<String[]> getUserBookings(
+            int userId
+    ) {
+
+        List<String[]> bookings =
+                new ArrayList<>();
+
+        String query =
+                "SELECT " +
+                        "m.title, " +
+                        "m.poster_path, " +
+                        "GROUP_CONCAT(" +
+                        "CONCAT(s.seat_row, s.seat_number) " +
+                        "SEPARATOR ', '" +
+                        ") AS seats, " +
+                        "b.total_amount " +
+                        "FROM bookings b " +
+                        "JOIN showtimes st " +
+                        "ON b.showtime_id = st.id " +
+                        "JOIN movies m " +
+                        "ON st.movie_id = m.id " +
+                        "JOIN booking_seats bs " +
+                        "ON b.id = bs.booking_id " +
+                        "JOIN seats s " +
+                        "ON bs.seat_id = s.id " +
+                        "WHERE b.user_id = ? " +
+                        "GROUP BY b.id";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
+
+            statement.setInt(
+                    1,
+                    userId
+            );
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            while(resultSet.next()) {
+
+                String[] booking =
+                        new String[4];
+
+                booking[0] =
+                        resultSet.getString(
+                                "title"
+                        );
+
+                booking[1] =
+                        resultSet.getString(
+                                "poster_path"
+                        );
+
+                booking[2] =
+                        resultSet.getString(
+                                "seats"
+                        );
+
+                booking[3] =
+                        resultSet.getString(
+                                "total_amount"
+                        );
+
+                bookings.add(
+                        booking
+                );
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return bookings;
     }
 }

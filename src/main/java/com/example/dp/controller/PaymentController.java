@@ -1,5 +1,9 @@
 package com.example.dp.controller;
 
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+
 import com.example.dp.dao.BookingDAO;
 import com.example.dp.dao.SeatDAO;
 
@@ -26,6 +30,8 @@ public class PaymentController {
     @FXML
     private Button confirmPaymentButton;
 
+
+
     private int showtimeId;
 
     private final BookingDAO bookingDAO =
@@ -33,6 +39,8 @@ public class PaymentController {
 
     private final SeatDAO seatDAO =
             new SeatDAO();
+
+
 
     @FXML
     public void initialize() {
@@ -113,6 +121,32 @@ public class PaymentController {
         System.out.println(
                 "Booking saved successfully"
         );
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/view/dashboard.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(
+                            loader.load()
+                    );
+
+            Stage stage =
+                    (Stage) confirmPaymentButton
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(scene);
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 
     public void setPaymentData(
@@ -137,4 +171,6 @@ public class PaymentController {
                 "$" + total
         );
     }
+
+
 }

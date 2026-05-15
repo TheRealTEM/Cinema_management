@@ -80,6 +80,15 @@ public class BookingController {
 
     private double seatPrice = 15;
 
+    private Scene previousScene;
+
+    public void setPreviousScene(
+            Scene scene
+    ) {
+
+        previousScene = scene;
+    }
+
     @FXML
     public void initialize() {
 
@@ -183,6 +192,8 @@ public class BookingController {
 
             PaymentController controller =
                     loader.getController();
+
+
 
             controller.setPaymentData(
                     selectedMovie.getTitle(),
@@ -396,5 +407,17 @@ public class BookingController {
         );
     }
 
+    @FXML
+    public void handleBack() {
+
+        Stage stage =
+                (Stage) totalPriceLabel
+                        .getScene()
+                        .getWindow();
+
+        stage.setScene(
+                previousScene
+        );
+    }
 
 }

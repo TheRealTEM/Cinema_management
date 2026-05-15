@@ -8,6 +8,7 @@ import javafx.fxml.Initializable;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.ComboBox;
 import javafx.stage.Stage;
 
 import com.example.dp.dao.ShowtimeDAO;
@@ -35,11 +36,17 @@ public class DashboardController
     @FXML
     private HBox moviesContainer;
 
+    @FXML
+    private ComboBox<String>
+            genreComboBox;
+
     private MovieDAO movieDAO =
             new MovieDAO();
 
     private ShowtimeDAO showtimeDAO =
             new ShowtimeDAO();
+
+
 
     @Override
     public void initialize(
@@ -47,13 +54,43 @@ public class DashboardController
             ResourceBundle resourceBundle
     ) {
 
+        genreComboBox
+                .getItems()
+                .addAll(
+                        movieDAO.getAllGenres()
+                );
+
+        genreComboBox.setValue(
+                "All"
+        );
+
         loadMovies();
     }
 
     public void loadMovies() {
 
-        List<Movie> movies =
-                movieDAO.getAllMovies();
+        moviesContainer
+                .getChildren()
+                .clear();
+
+        List<Movie> movies;
+
+        String selectedGenre =
+                genreComboBox.getValue();
+
+        if(selectedGenre == null ||
+                selectedGenre.equals("All")) {
+
+            movies =
+                    movieDAO.getAllMovies();
+
+        } else {
+
+            movies =
+                    movieDAO.getMoviesByGenre(
+                            selectedGenre
+                    );
+        }
 
         for(Movie movie : movies) {
 
@@ -64,6 +101,12 @@ public class DashboardController
                     .getChildren()
                     .add(card);
         }
+    }
+
+    @FXML
+    public void handleGenreFilter() {
+
+        loadMovies();
     }
 
     private VBox createMovieCard(
@@ -199,6 +242,10 @@ public class DashboardController
                     BookingController controller =
                             loader.getController();
 
+                    controller.setPreviousScene(
+                            showtimeButton.getScene()
+                    );
+
                     controller.setMovie(
                             movie,
                             showtime
@@ -236,5 +283,37 @@ public class DashboardController
         );
 
         return card;
+    }
+
+    @FXML
+    public void handleMyBookings() {
+
+        try {
+
+            FXMLLoader loader =
+                    new FXMLLoader(
+                            getClass().getResource(
+                                    "/view/mybookings.fxml"
+                            )
+                    );
+
+            Scene scene =
+                    new Scene(
+                            loader.load()
+                    );
+
+            Stage stage =
+                    (Stage) moviesContainer
+                            .getScene()
+                            .getWindow();
+
+            stage.setScene(
+                    scene
+            );
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
     }
 }
