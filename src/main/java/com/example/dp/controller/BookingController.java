@@ -1,7 +1,6 @@
 package com.example.dp.controller;
 
 import com.example.dp.dao.ShowtimeDAO;
-import com.example.dp.model.BookingShowtime;
 import com.example.dp.model.Movie;
 import com.example.dp.model.Showtime;
 import com.example.dp.state.*;
@@ -28,7 +27,7 @@ public class BookingController {
 
     private Movie selectedMovie;
 
-    private BookingShowtime selectedShowtime;
+    private Showtime selectedShowtime;
 
     private final ShowtimeDAO showtimeDAO =
             new ShowtimeDAO();
@@ -295,6 +294,8 @@ public class BookingController {
 
         selectedMovie = movie;
 
+        this.selectedShowtime = showtime;
+
         headerMovieTitleLabel.setText(
                 movie.getTitle()
         );
@@ -343,68 +344,7 @@ public class BookingController {
         );
     }
 
-    private void loadShowtimeDetails(
-            Movie movie
-    ) {
-        selectedShowtime =
-                showtimeDAO
-                        .getNextAvailableShowtimeByMovieId(
-                                movie.getId()
-                        );
 
-        if(selectedShowtime == null) {
-            theaterTitleLabel.setText(
-                    "No showtime available"
-            );
-
-            showDateLabel.setText(
-                    "-- - -- - ----"
-            );
-
-            showTimeLabel.setText(
-                    "--:-- - --:--"
-            );
-
-            nextShowLabel.setText(
-                    "No upcoming show"
-            );
-
-            return;
-        }
-
-        seatPrice =
-                selectedShowtime.getBasePrice();
-
-        theaterTitleLabel.setText(
-                selectedShowtime.getHallName()
-        );
-
-        showDateLabel.setText(
-                selectedShowtime
-                        .getStartTime()
-                        .format(dateFormatter)
-        );
-
-        showTimeLabel.setText(
-                selectedShowtime
-                        .getStartTime()
-                        .format(timeFormatter)
-                        + " - " +
-                        selectedShowtime
-                                .getEndTime()
-                                .format(timeFormatter)
-        );
-
-        nextShowLabel.setText(
-                selectedShowtime
-                        .getStartTime()
-                        .format(timeFormatter)
-                        + " " +
-                        selectedShowtime.getHallName()
-        );
-
-        updateSummary();
-    }
 
     private String formatPrice(
             double price
