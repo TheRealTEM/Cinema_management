@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane maxHeight="-Infinity"
+            maxWidth="-Infinity"
+            minHeight="-Infinity"
+            minWidth="-Infinity"
+            prefHeight="700.0"
+            prefWidth="900.0"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/26"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.dp.controller.MyBookingsController">
+
+    <top>
+
+        <HBox alignment="CENTER_LEFT"
+              prefHeight="60.0"
+              prefWidth="200.0"
+              spacing="25.0"
+              styleClass="navbar"
+              BorderPane.alignment="CENTER">
+
+            <padding>
+                <Insets top="20.0"/>
+            </padding>
+
+            <children>
+
+                <Label text="Movies"
+                       onMouseClicked="#handleDashboard"
+                       style="-fx-cursor: hand;"/>
+
+                <Label text="My Bookings"
+                       styleClass="booking-nav-active"/>
+
+            </children>
+
+        </HBox>
+
+    </top>
+
+    <center>
+
+        <VBox prefHeight="200.0"
+              prefWidth="100.0"
+              spacing="10.0"
+              styleClass="root-pane"
+              BorderPane.alignment="CENTER">
+
+            <children>
+
+                <HBox alignment="CENTER_LEFT"
+                      prefHeight="10.0"
+                      prefWidth="200.0">
+
+                    <children>
+
+                        <Label text="My Bookings"
+                               style="-fx-font-size: 32px;
+                                      -fx-font-weight: bold;
+                                      -fx-text-fill: white;"/>
+
+                    </children>
+
+                    <padding>
+                        <Insets bottom="10.0"
+                                left="25.0"/>
+                    </padding>
+
+                </HBox>
+
+                <ScrollPane fitToHeight="true"
+                            fitToWidth="true"
+                            pannable="true"
+                            prefHeight="420.0"
+                            prefWidth="200.0"
+                            styleClass="movies-scroll">
+
+                    <content>
+
+                        <HBox fx:id="bookingsContainer"
+                              prefHeight="100.0"
+                              prefWidth="200.0"
+                              spacing="25.0">
+
+                            <padding>
+                                <Insets top="30.0"/>
+                            </padding>
+
+                        </HBox>
+
+                    </content>
+
+                    <padding>
+                        <Insets left="20.0"/>
+                    </padding>
+
+                </ScrollPane>
+
+            </children>
+
+            <padding>
+                <Insets top="20.0"/>
+            </padding>
+
+        </VBox>
+
+    </center>
+
+</BorderPane>

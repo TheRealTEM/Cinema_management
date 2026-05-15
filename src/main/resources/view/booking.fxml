@@ -35,14 +35,10 @@
 
             <children>
 
-                <Label text="Movies"/>
 
-                <Label text="Showtimes"/>
-
-                <Label text="Theatres"/>
-
-                <Label styleClass="booking-nav-active"
-                       text="My Bookings"/>
+                <Button text="← Back"
+                        onAction="#handleBack"
+                        styleClass="book-button"/>
 
             </children>
 
