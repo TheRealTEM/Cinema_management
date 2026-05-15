@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:controller="com.example.dp.controller.BookingController"
+            prefHeight="790.0"
+            prefWidth="1128.0"
+            styleClass="booking-page"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1">
+
+    <top>
+
+        <HBox alignment="CENTER_LEFT"
+              prefHeight="68.0"
+              spacing="28.0"
+              styleClass="booking-nav">
+
+            <padding>
+                <Insets left="44.0"
+                        right="28.0"
+                        top="24.0"/>
+            </padding>
+
+            <children>
+
+
+                <Button text="← Back"
+                        onAction="#handleBack"
+                        styleClass="book-button"/>
+
+            </children>
+
+        </HBox>
+
+    </top>
+
+    <center>
+
+        <VBox alignment="TOP_CENTER"
+              spacing="28.0"
+              styleClass="booking-main">
+
+            <padding>
+                <Insets bottom="36.0"
+                        left="44.0"
+                        right="42.0"
+                        top="38.0"/>
+            </padding>
+
+            <children>
+
+                <VBox alignment="CENTER"
+                      spacing="4.0">
+
+                    <children>
+
+                        <Label fx:id="theaterTitleLabel"
+                               styleClass="booking-theater-title"
+                               text="Theater #"/>
+
+                        <Label fx:id="headerMovieTitleLabel"
+                               styleClass="booking-movie-subtitle"
+                               text="Movie name"/>
+
+                    </children>
+
+                </VBox>
+
+                <HBox alignment="CENTER"
+                      spacing="128.0">
+
+                    <children>
+
+                        <Label fx:id="showDateLabel"
+                               styleClass="booking-date-time"
+                               text="DD - MM - 20YY"/>
+
+                        <Label fx:id="showTimeLabel"
+                               styleClass="booking-date-time"
+                               text="##:## - ##:##"/>
+
+                    </children>
+
+                </HBox>
+
+                <Region prefHeight="24.0"/>
+
+                <!-- SEATS -->
+
+                <HBox alignment="CENTER"
+                      spacing="39.0">
+
+                    <children>
+
+                        <!-- LEFT GRID -->
+
+                        <HBox fx:id="seatContainer"
+                              alignment="CENTER"
+                              spacing="40"/>
+
+                    </children>
+
+                </HBox>
+
+                <!-- LEGEND -->
+
+                <HBox alignment="CENTER"
+                      maxWidth="478.0"
+                      prefHeight="57.0"
+                      prefWidth="478.0"
+                      spacing="26.0"
+                      styleClass="seat-legend">
+
+                    <children>
+
+                        <HBox alignment="CENTER"
+                              spacing="13.0">
+
+                            <children>
+
+                                <Region prefHeight="31.0"
+                                        prefWidth="31.0"
+                                        styleClass="legend-seat-available"/>
+
+                                <Label styleClass="legend-text"
+                                       text="Available"/>
+
+                            </children>
+
+                        </HBox>
+
+                        <HBox alignment="CENTER"
+                              spacing="13.0">
+
+                            <children>
+
+                                <Region prefHeight="31.0"
+                                        prefWidth="31.0"
+                                        styleClass="legend-seat-booked"/>
+
+                                <Label styleClass="booked-legend-text"
+                                       text="Booked"/>
+
+                            </children>
+
+                        </HBox>
+
+                        <HBox alignment="CENTER"
+                              spacing="13.0">
+
+                            <children>
+
+                                <Region prefHeight="31.0"
+                                        prefWidth="31.0"
+                                        styleClass="legend-seat-selected"/>
+
+                                <Label styleClass="selected-legend-text"
+                                       text="Selected"/>
+
+                            </children>
+
+                        </HBox>
+
+                    </children>
+
+                </HBox>
+
+            </children>
+
+        </VBox>
+
+    </center>
+
+    <!-- RIGHT SIDEBAR -->
+
+    <right>
+
+        <VBox prefWidth="408.0"
+              spacing="20.0"
+              styleClass="booking-sidebar">
+
+            <padding>
+                <Insets bottom="38.0"
+                        left="43.0"
+                        right="45.0"
+                        top="65.0"/>
+            </padding>
+
+            <children>
+
+                <HBox maxWidth="320.0"
+                      prefHeight="206.0"
+                      spacing="12.0"
+                      styleClass="booking-movie-card">
+
+                    <children>
+
+                        <ImageView fx:id="moviePosterImageView"
+                                   fitHeight="206.0"
+                                   fitWidth="132.0"
+                                   preserveRatio="false"/>
+
+                        <VBox alignment="CENTER_LEFT"
+                              spacing="5.0">
+
+                            <children>
+
+                                <Label styleClass="sidebar-title"
+                                       text="Movie Title"
+                                       fx:id="movieTitleLabel"/>
+
+
+                                <Label styleClass="sidebar-muted"
+                                       text="Genre, Genre , Genre"
+                                       fx:id="genreLabel"/>
+
+                                <Label styleClass="sidebar-accent-small"
+                                       text="Xhr Xmin"
+                                       fx:id="durationLabel"/>
+
+                                <Region prefHeight="6.0"/>
+
+                                <Label styleClass="sidebar-muted-small"
+                                       text="Next Show"/>
+
+                                <Label fx:id="nextShowLabel"
+                                       styleClass="sidebar-accent-small"
+                                       text="00:00 Screen #"/>
+
+                            </children>
+
+                        </VBox>
+
+                    </children>
+
+                </HBox>
+
+                <!-- SELECTED SEATS -->
+
+                <VBox spacing="12.0">
+
+                    <children>
+
+                        <Label fx:id="selectedSeatsLabel"
+                               styleClass="summary-seat-title"
+                               text="No seats selected"/>
+
+                    </children>
+
+                </VBox>
+
+                <!-- TOTALS -->
+
+                <VBox spacing="8.0">
+
+                    <children>
+
+                        <HBox>
+
+                            <children>
+
+                                <Label styleClass="total-label"
+                                       text="Total"/>
+
+                                <Region HBox.hgrow="ALWAYS"/>
+
+                                <Label fx:id="totalPriceLabel"
+                                       styleClass="total-value"
+                                       text="\$0"/>
+
+                            </children>
+
+                        </HBox>
+
+                    </children>
+
+                </VBox>
+
+                <!-- PAYMENT -->
+
+                <Button maxWidth="320.0"
+                        prefHeight="56.0"
+                        styleClass="booking-pay-button"
+                        text="Proceed to Payment"
+                        onAction="#handlePayment"/>
+
+                <Region VBox.vgrow="ALWAYS"/>
+
+                <Label alignment="CENTER"
+                       maxWidth="320.0"
+                       styleClass="hold-message"
+                       text="Tickets are held for 8:45 minutes"/>
+
+            </children>
+
+        </VBox>
+
+    </right>
+
+</BorderPane>
