@@ -100,15 +100,34 @@
                         <Button styleClass="admin-button-secondary" onAction="#handleDeleteMovie" text="Delete Selected"/>
                     </HBox>
 
-                    <TableView fx:id="moviesTable" prefHeight="400.0" styleClass="admin-table">
+                    <TableView fx:id="moviesTable"
+                               prefHeight="400.0"
+                               styleClass="admin-table">
+
                         <columns>
-                            <TableColumn prefWidth="150.0" text="Title"/>
-                            <TableColumn prefWidth="100.0" text="Genre"/>
-                            <TableColumn prefWidth="80.0" text="Duration (min)"/>
-                            <TableColumn prefWidth="100.0" text="Status"/>
-                            <TableColumn prefWidth="120.0" text="Release Date"/>
-                            <TableColumn prefWidth="100.0" text="Actions"/>
+
+                            <TableColumn fx:id="titleColumn"
+                                         prefWidth="150.0"
+                                         text="Title"/>
+
+                            <TableColumn fx:id="genreColumn"
+                                         prefWidth="100.0"
+                                         text="Genre"/>
+
+                            <TableColumn fx:id="durationColumn"
+                                         prefWidth="120.0"
+                                         text="Duration"/>
+
+                            <TableColumn fx:id="statusColumn"
+                                         prefWidth="100.0"
+                                         text="Status"/>
+
+                            <TableColumn fx:id="releaseDateColumn"
+                                         prefWidth="140.0"
+                                         text="Release Date"/>
+
                         </columns>
+
                     </TableView>
                 </VBox>
 
@@ -145,6 +164,13 @@
                         <ComboBox fx:id="paymentStatusFilter" prefWidth="150.0" promptText="All Statuses" style="-fx-background-color: #241833; -fx-text-fill: white; -fx-border-color: #9126ff; -fx-border-radius: 4;"/>
                         <Label style="-fx-text-fill: #b8b3c7; -fx-font-size: 14px; -fx-padding: 0 0 0 30px;" text="Filter by Method:"/>
                         <ComboBox fx:id="paymentMethodFilter" prefWidth="150.0" promptText="All Methods" style="-fx-background-color: #241833; -fx-text-fill: white; -fx-border-color: #9126ff; -fx-border-radius: 4;"/>
+                        <Button styleClass="admin-button"
+                                onAction="#handleConfirmPayment"
+                                text="Confirm Selected"/>
+
+                        <Button styleClass="admin-button-secondary"
+                                onAction="#handleCancelPayment"
+                                text="Cancel Selected"/>
                     </HBox>
 
                     <!-- SUMMARY STATS -->

@@ -12,5 +12,7 @@ module com.example.dp {
 
     opens com.example.dp.controller to javafx.fxml;
 
+    opens com.example.dp.model to javafx.base;
+
     exports com.example.dp;
 }

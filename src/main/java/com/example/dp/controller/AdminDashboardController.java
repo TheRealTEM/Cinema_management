@@ -23,6 +23,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -111,6 +112,26 @@ public class AdminDashboardController implements Initializable {
     private ShowtimeDAO showtimeDAO;
 
     @FXML
+    private TableColumn<Movie, String>
+            titleColumn;
+
+    @FXML
+    private TableColumn<Movie, String>
+            genreColumn;
+
+    @FXML
+    private TableColumn<Movie, Integer>
+            durationColumn;
+
+    @FXML
+    private TableColumn<Movie, String>
+            statusColumn;
+
+    @FXML
+    private TableColumn<Movie, LocalDate>
+            releaseDateColumn;
+
+    @FXML
     private VBox hallSection;
 
     @FXML
@@ -144,6 +165,26 @@ public class AdminDashboardController implements Initializable {
         paymentsSection.managedProperty().bind(paymentsSection.visibleProperty());
         hallSection.managedProperty()
                 .bind(hallSection.visibleProperty());
+
+        titleColumn.setCellValueFactory(
+                new PropertyValueFactory<>("title")
+        );
+
+        genreColumn.setCellValueFactory(
+                new PropertyValueFactory<>("genre")
+        );
+
+        durationColumn.setCellValueFactory(
+                new PropertyValueFactory<>("durationMinutes")
+        );
+
+        statusColumn.setCellValueFactory(
+                new PropertyValueFactory<>("status")
+        );
+
+        releaseDateColumn.setCellValueFactory(
+                new PropertyValueFactory<>("releaseDate")
+        );
 
         setupTableColumns();
         setupNavigation();
@@ -221,28 +262,28 @@ public class AdminDashboardController implements Initializable {
 
     private void setupFilters() {
         bookingStatusFilter.setItems(FXCollections.observableArrayList(
-            "All Statuses",
-            "PENDING",
-            "CONFIRMED",
-            "CANCELLED"
+                "All Statuses",
+                "PENDING",
+                "CONFIRMED",
+                "CANCELLED"
         ));
         bookingStatusFilter.setValue("All Statuses");
         bookingStatusFilter.setOnAction(e -> loadBookingsData());
 
         paymentStatusFilter.setItems(FXCollections.observableArrayList(
-            "All Statuses",
-            "PAID",
-            "FAILED",
-            "PENDING"
+                "All Statuses",
+                "PAID",
+                "FAILED",
+                "PENDING"
         ));
         paymentStatusFilter.setValue("All Statuses");
         paymentStatusFilter.setOnAction(e -> loadPaymentsData());
 
         paymentMethodFilter.setItems(FXCollections.observableArrayList(
-            "All Methods",
-            "CARD",
-            "CASH",
-            "WALLET"
+                "All Methods",
+                "CARD",
+                "CASH",
+                "WALLET"
         ));
         paymentMethodFilter.setValue("All Methods");
         paymentMethodFilter.setOnAction(e -> loadPaymentsData());
@@ -359,12 +400,17 @@ public class AdminDashboardController implements Initializable {
 
             if ("All Statuses".equals(status)) {
                 bookings = bookingDAO.getAllBookings();
+                if (bookings.isEmpty()) {
+                    showInfo("No bookings in database. ");
+                }
             } else {
                 bookings = bookingDAO.getBookingsByStatus(status);
             }
 
             ObservableList<Booking> data = FXCollections.observableArrayList(bookings);
             bookingsTable.setItems(data);
+            System.out.println("DEBUG: Booking table populated successfully");
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -376,6 +422,9 @@ public class AdminDashboardController implements Initializable {
             String method = paymentMethodFilter.getValue();
 
             List<Payment> payments = paymentDAO.getPaymentsByFilters(status, method);
+            if (payments.isEmpty()) {
+                showInfo("No payments  in database. ");
+            }
             ObservableList<Payment> data = FXCollections.observableArrayList(payments);
             paymentsTable.setItems(data);
 
@@ -386,6 +435,7 @@ public class AdminDashboardController implements Initializable {
             cardPaymentsLabel.setText(String.format("$%.2f", cardTotal));
             cashPaymentsLabel.setText(String.format("$%.2f", cashTotal));
             walletPaymentsLabel.setText(String.format("$%.2f", walletTotal));
+            System.out.println("DEBUG: Payments table populated successfully");
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -428,7 +478,7 @@ public class AdminDashboardController implements Initializable {
     private void openMovieDialog(Movie movie) {
         try {
             FXMLLoader loader = new FXMLLoader(
-                getClass().getResource("/view/admin-movie-dialog.fxml")
+                    getClass().getResource("/view/admin-movie-dialog.fxml")
             );
             Parent root = loader.load();
             AdminMovieDialogController controller = loader.getController();
@@ -579,6 +629,43 @@ public class AdminDashboardController implements Initializable {
         } catch (Exception e) {
 
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    public void handleConfirmPayment() {
+
+        Payment payment =
+                paymentsTable
+                        .getSelectionModel()
+                        .getSelectedItem();
+
+        if(payment != null) {
+
+            paymentDAO.updatePaymentStatus(
+                    payment.getId(),
+                    "PAID"
+            );
+
+            loadPaymentsData();
+        }
+    }
+
+    @FXML
+    public void handleCancelPayment() {
+
+        Payment payment =
+                paymentsTable
+                        .getSelectionModel()
+                        .getSelectedItem();
+
+        if(payment != null) {
+            paymentDAO.updatePaymentStatus(
+                    payment.getId(),
+                    "CANCELLED"
+            );
+
+            loadPaymentsData();
         }
     }
 }

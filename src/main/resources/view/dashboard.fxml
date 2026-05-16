@@ -27,7 +27,6 @@
             <HBox alignment="CENTER_RIGHT" prefHeight="10.0" prefWidth="200.0" spacing="25.0">
                <children>
                   <Label styleClass="active-category" text="Now Playing" />
-                  <Label styleClass="inactive-category" text="Coming Soon" />
                   <ComboBox fx:id="genreComboBox"
                             promptText="Select Genre"
                             onAction="#handleGenreFilter"

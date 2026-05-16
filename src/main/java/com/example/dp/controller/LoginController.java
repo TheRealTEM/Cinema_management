@@ -7,6 +7,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.layout.AnchorPane;
 
+import com.example.dp.proxy.AdminProxy;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -38,37 +40,43 @@ public class LoginController {
 
             try {
 
-                String dashboardPath;
 
-                if(user.getRole().equals("ADMIN")) {
-
-                    dashboardPath =
-                            "/view/admin-dashboard.fxml";
-
-                } else {
-
-                    dashboardPath =
-                            "/view/dashboard.fxml";
-                }
-
-                FXMLLoader loader =
-                        new FXMLLoader(
-                                getClass().getResource(
-                                        dashboardPath
-                                )
-                        );
-
-                Scene scene =
-                        new Scene(loader.load());
 
                 Stage stage =
                         (Stage) rootPane
                                 .getScene()
                                 .getWindow();
 
-                stage.setScene(scene);
+                if(user.getRole().equalsIgnoreCase(
+                        "ADMIN"
+                )) {
 
-                stage.show();
+                    AdminProxy proxy =
+                            new AdminProxy(
+                                    user.getRole(),
+                                    stage
+                            );
+
+                    proxy.openDashboard();
+
+                } else {
+
+                    FXMLLoader loader =
+                            new FXMLLoader(
+                                    getClass().getResource(
+                                            "/view/dashboard.fxml"
+                                    )
+                            );
+
+                    Scene scene =
+                            new Scene(
+                                    loader.load()
+                            );
+
+                    stage.setScene(scene);
+
+                    stage.show();
+                }
 
             } catch (Exception e) {
                 e.printStackTrace();

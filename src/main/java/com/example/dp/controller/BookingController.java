@@ -72,13 +72,13 @@ public class BookingController {
     @FXML
     private Label totalPriceLabel;
 
+    private double seatPrice ;
+
     @FXML
     private Label selectedSeatsLabel;
 
     private final List<String> selectedSeats =
             new ArrayList<>();
-
-    private double seatPrice = 15;
 
     private Scene previousScene;
 
@@ -358,6 +358,10 @@ public class BookingController {
                         .toLocalTime()
                         .toString()
         );
+
+        seatPrice =
+                showtime.getBasePrice()
+                        .doubleValue();
         loadBookedSeats();
     }
 

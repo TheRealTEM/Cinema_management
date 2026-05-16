@@ -4,8 +4,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.example.dp.dao.BookingDAO;
-import com.example.dp.dao.SeatDAO;
+import com.example.dp.facade.BookingFacade;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -30,15 +29,13 @@ public class PaymentController {
     @FXML
     private Button confirmPaymentButton;
 
+    private final BookingFacade bookingFacade =
+            new BookingFacade();
+
 
 
     private int showtimeId;
 
-    private final BookingDAO bookingDAO =
-            new BookingDAO();
-
-    private final SeatDAO seatDAO =
-            new SeatDAO();
 
 
 
@@ -77,22 +74,6 @@ public class PaymentController {
                                 .replace("$", "")
                 );
 
-        int bookingId =
-                bookingDAO.createBooking(
-                        1,
-                        showtimeId,
-                        total
-                );
-
-        if(bookingId == -1) {
-
-            System.out.println(
-                    "Booking failed"
-            );
-
-            return;
-        }
-
         String seatsText =
                 seatsLabel
                         .getText()
@@ -101,27 +82,25 @@ public class PaymentController {
         String[] seats =
                 seatsText.split(", ");
 
-        for(String seat : seats) {
-
-            int seatId =
-                    seatDAO.getSeatIdBySeatNumber(
-                            seat
-                    );
-
-            if(seatId != -1) {
-
-                bookingDAO.saveBookedSeat(
-                        bookingId,
+        boolean success =
+                bookingFacade.completeBooking(
+                        1,
                         showtimeId,
-                        seatId
+                        seats,
+                        total,
+                        paymentMethod
                 );
-            }
+
+
+
+        if(!success) {
+
+            System.out.println(
+                    "Booking failed"
+            );
+
+            return;
         }
-
-        System.out.println(
-                "Booking saved successfully"
-        );
-
         try {
 
             FXMLLoader loader =
