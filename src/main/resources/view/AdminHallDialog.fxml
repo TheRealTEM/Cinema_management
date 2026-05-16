@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="720.0"
+            prefWidth="900.0"
+            styleClass="root-pane"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.dp.controller.AdminHallDialogController">
+
+    <!-- BACK BUTTON -->
+    <Hyperlink text="← Back"
+               onAction="#handleCancel"
+               AnchorPane.topAnchor="20.0"
+               AnchorPane.leftAnchor="30.0"
+               styleClass="movie-dialog-back"/>
+
+    <!-- MAIN SCROLL -->
+    <ScrollPane fitToWidth="true"
+                hbarPolicy="NEVER"
+                vbarPolicy="AS_NEEDED"
+                styleClass="movies-scroll"
+                AnchorPane.topAnchor="50.0"
+                AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="0.0">
+
+        <content>
+
+            <VBox spacing="18.0"
+                  styleClass="movie-dialog-card">
+
+                <padding>
+                    <Insets top="25.0"
+                            bottom="25.0"
+                            left="60.0"
+                            right="60.0"/>
+                </padding>
+
+                <!-- TITLE -->
+                <HBox alignment="CENTER_LEFT"
+                      spacing="12.0">
+
+                    <Label text="🏛"
+                           styleClass="movie-dialog-icon"/>
+
+                    <Label text="Hall Showtime Management"
+                           style="-fx-text-fill: white;
+                                  -fx-font-size: 24px;
+                                  -fx-font-weight: bold;"/>
+                </HBox>
+
+                <!-- MOVIE + HALL -->
+                <HBox spacing="16.0">
+
+                    <VBox spacing="5.0"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Movie"
+                               styleClass="movie-dialog-label"/>
+
+                        <ComboBox fx:id="movieComboBox"
+                                  prefHeight="50.0"
+                                  maxWidth="Infinity"
+                                  styleClass="movie-dialog-combo"
+                                  promptText="Select Movie"/>
+                    </VBox>
+
+                    <VBox spacing="5.0"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Cinema Hall"
+                               styleClass="movie-dialog-label"/>
+
+                        <ComboBox fx:id="hallComboBox"
+                                  prefHeight="50.0"
+                                  maxWidth="Infinity"
+                                  styleClass="movie-dialog-combo"
+                                  promptText="Select Hall"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- START TIME + PRICE -->
+                <HBox spacing="16.0">
+
+                    <VBox spacing="5.0"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Start Time"
+                               styleClass="movie-dialog-label"/>
+
+                        <TextField fx:id="showtimeField"
+                                   prefHeight="50.0"
+                                   maxWidth="Infinity"
+                                   styleClass="movie-dialog-input"
+                                   promptText="2026-05-20T18:00"/>
+                    </VBox>
+
+                    <VBox spacing="5.0"
+                          HBox.hgrow="ALWAYS">
+
+                        <Label text="Ticket Price"
+                               styleClass="movie-dialog-label"/>
+
+                        <TextField fx:id="priceField"
+                                   prefHeight="50.0"
+                                   maxWidth="Infinity"
+                                   styleClass="movie-dialog-input"
+                                   promptText="150"/>
+                    </VBox>
+
+                </HBox>
+
+                <!-- INFO CARD -->
+                <VBox spacing="10.0"
+                      styleClass="admin-card">
+
+                    <Label text="Showtime Information"
+                           styleClass="admin-card-title"/>
+
+                    <Label text="• End time is automatically generated"
+                           style="-fx-text-fill: #b8b3c7;"/>
+
+                    <Label text="• Showtime status becomes AVAILABLE"
+                           style="-fx-text-fill: #b8b3c7;"/>
+
+                    <Label text="• Hall data is loaded directly from database"
+                           style="-fx-text-fill: #b8b3c7;"/>
+
+                </VBox>
+
+                <!-- BUTTONS -->
+                <HBox spacing="12.0">
+
+                    <Button text="Create Showtime"
+                            onAction="#handleCreateShowtime"
+                            styleClass="movie-dialog-save-btn"
+                            prefHeight="50.0"
+                            maxWidth="Infinity"
+                            HBox.hgrow="ALWAYS"/>
+
+                    <Button text="Clear"
+                            onAction="#handleClear"
+                            styleClass="movie-dialog-delete-btn"
+                            prefHeight="50.0"
+                            prefWidth="140.0"/>
+
+                </HBox>
+
+            </VBox>
+
+        </content>
+
+    </ScrollPane>
+
+</AnchorPane>

@@ -3,6 +3,7 @@ package com.example.dp.controller;
 import com.example.dp.dao.BookingDAO;
 import com.example.dp.dao.MovieDAO;
 import com.example.dp.dao.PaymentDAO;
+import com.example.dp.dao.ShowtimeDAO;
 import com.example.dp.model.Booking;
 import com.example.dp.model.Movie;
 import com.example.dp.model.Payment;
@@ -22,8 +23,13 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.time.LocalDateTime;
+
+import java.math.BigDecimal;
 
 public class AdminDashboardController implements Initializable {
 
@@ -102,6 +108,26 @@ public class AdminDashboardController implements Initializable {
 
     private PaymentDAO paymentDAO;
 
+    private ShowtimeDAO showtimeDAO;
+
+    @FXML
+    private VBox hallSection;
+
+    @FXML
+    private Label hallsNav;
+
+    @FXML
+    private ComboBox<Movie> movieComboBox;
+
+    @FXML
+    private ComboBox<String> hallComboBox;
+
+    @FXML
+    private TextField showtimeField;
+
+    @FXML
+    private TextField priceField;
+
     @Override
     public void initialize(
             URL url,
@@ -110,11 +136,14 @@ public class AdminDashboardController implements Initializable {
         movieDAO = new MovieDAO();
         bookingDAO = new BookingDAO();
         paymentDAO = new PaymentDAO();
+        showtimeDAO = new ShowtimeDAO();
 
         overviewSection.managedProperty().bind(overviewSection.visibleProperty());
         moviesSection.managedProperty().bind(moviesSection.visibleProperty());
         bookingsSection.managedProperty().bind(bookingsSection.visibleProperty());
         paymentsSection.managedProperty().bind(paymentsSection.visibleProperty());
+        hallSection.managedProperty()
+                .bind(hallSection.visibleProperty());
 
         setupTableColumns();
         setupNavigation();
@@ -185,6 +214,9 @@ public class AdminDashboardController implements Initializable {
         moviesNav.setOnMouseClicked(e -> showMovies());
         bookingsNav.setOnMouseClicked(e -> showBookings());
         paymentsNav.setOnMouseClicked(e -> showPayments());
+        hallsNav.setOnMouseClicked(
+                e -> showHallManagement()
+        );
     }
 
     private void setupFilters() {
@@ -261,6 +293,10 @@ public class AdminDashboardController implements Initializable {
         moviesNav.getStyleClass().removeAll("admin-nav-item-active");
         bookingsNav.getStyleClass().removeAll("admin-nav-item-active");
         paymentsNav.getStyleClass().removeAll("admin-nav-item-active");
+        hallsNav.getStyleClass()
+                .removeAll(
+                        "admin-nav-item-active"
+                );
 
         activeNav.getStyleClass().add("admin-nav-item-active");
     }
@@ -292,6 +328,8 @@ public class AdminDashboardController implements Initializable {
             e.printStackTrace();
         }
     }
+
+
 
     private void loadMoviesData() {
         try {
@@ -431,6 +469,116 @@ public class AdminDashboardController implements Initializable {
         Booking selected = bookingsTable.getSelectionModel().getSelectedItem();
         if (selected != null) {
             System.out.println("Cancel Booking: " + selected.getId());
+        }
+    }
+
+    private void showHallManagement() {
+
+        overviewSection.setVisible(false);
+
+        moviesSection.setVisible(false);
+
+        bookingsSection.setVisible(false);
+
+        paymentsSection.setVisible(false);
+
+        hallSection.setVisible(true);
+
+        updateNavActive(hallsNav);
+
+        loadHallManagementData();
+    }
+
+    private void loadHallManagementData() {
+
+        movieComboBox.getItems().clear();
+
+        hallComboBox.getItems().clear();
+
+        movieComboBox.getItems().addAll(
+                movieDAO.getAllMovies()
+        );
+
+        hallComboBox.getItems().addAll(
+                showtimeDAO.getAllHallNames()
+        );
+    }
+
+    @FXML
+    public void handleCreateShowtime() {
+
+        Movie movie =
+                movieComboBox.getValue();
+
+        String hall =
+                hallComboBox.getValue();
+
+        String showtime =
+                showtimeField.getText();
+
+        String price =
+                priceField.getText();
+
+        if(movie == null ||
+                hall == null ||
+                showtime.isEmpty() ||
+                price.isEmpty()) {
+
+            showInfo(
+                    "Please fill all fields"
+            );
+
+            return;
+        }
+
+        try {
+
+            int hallId =
+                    Integer.parseInt(
+                            hall.replace(
+                                    "Hall ",
+                                    ""
+                            )
+                    );
+
+            DateTimeFormatter formatter =
+                    DateTimeFormatter.ofPattern(
+                            "yyyy-M-d HH:mm:ss"
+                    );
+
+            LocalDateTime startTime =
+                    LocalDateTime.parse(
+                            showtime,
+                            formatter
+                    );
+
+            LocalDateTime endTime =
+                    startTime.plusHours(2);
+
+            BigDecimal ticketPrice =
+                    BigDecimal.valueOf(
+                            Double.parseDouble(price)
+                    );
+
+            showtimeDAO.createShowtime(
+                    movie.getId(),
+                    hallId,
+                    startTime,
+                    endTime,
+                    ticketPrice
+            );
+
+            showInfo(
+                    "Showtime created successfully"
+            );
+
+            showtimeField.clear();
+
+            priceField.clear();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
         }
     }
 }

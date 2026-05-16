@@ -92,7 +92,7 @@
                     <Label text="Poster Path" styleClass="movie-dialog-label"/>
                     <TextField fx:id="posterPathField" promptText="Select an image..."
                                styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"
-                               editable="false"/>
+                               editable="true"/>
                 </VBox>
                 <Button text="Add Poster" onAction="#handleSelectImage"
                         styleClass="movie-dialog-poster-btn" prefHeight="50.0" prefWidth="140.0"/>

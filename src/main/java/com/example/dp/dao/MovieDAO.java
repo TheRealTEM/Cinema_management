@@ -209,4 +209,122 @@ public class MovieDAO {
 
         return movies;
     }
+
+    public int getActiveMoviesCount() {
+        String query = "SELECT COUNT(*) as count FROM movies WHERE status = 'NOW_SHOWING'";
+
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            if(resultSet.next()) {
+                return resultSet.getInt("count");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return 0;
+    }
+
+    public boolean updateMovieStatus(int movieId, String status) {
+        String query = "UPDATE movies SET status = ? WHERE id = ?";
+
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            statement.setString(1, status);
+            statement.setInt(2, movieId);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean addMovie(Movie movie) {
+        String query =
+                "INSERT INTO movies (title, description, genre, duration_minutes, rating, language, release_date, poster_path, status) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'COMING_SOON')";
+
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            statement.setString(1, movie.getTitle());
+            statement.setString(2, movie.getDescription());
+            statement.setString(3, movie.getGenre());
+            statement.setInt(4, movie.getDurationMinutes());
+            statement.setString(5, movie.getRating());
+            statement.setString(6, movie.getLanguage());
+            statement.setDate(7, java.sql.Date.valueOf(movie.getReleaseDate()));
+            statement.setString(8, movie.getPosterPath());
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean updateMovie(Movie movie) {
+        String query =
+                "UPDATE movies SET title = ?, description = ?, genre = ?, duration_minutes = ?, " +
+                        "rating = ?, language = ?, release_date = ?, poster_path = ?, status = ? WHERE id = ?";
+
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            statement.setString(1, movie.getTitle());
+            statement.setString(2, movie.getDescription());
+            statement.setString(3, movie.getGenre());
+            statement.setInt(4, movie.getDurationMinutes());
+            statement.setString(5, movie.getRating());
+            statement.setString(6, movie.getLanguage());
+            statement.setDate(7, java.sql.Date.valueOf(movie.getReleaseDate()));
+            statement.setString(8, movie.getPosterPath());
+            statement.setString(9, movie.getStatus());
+            statement.setInt(10, movie.getId());
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public boolean deleteMovie(int movieId) {
+        String query = "DELETE FROM movies WHERE id = ?";
+
+        try {
+            PreparedStatement statement =
+                    connection.prepareStatement(query);
+
+            statement.setInt(1, movieId);
+
+            int rows = statement.executeUpdate();
+            return rows > 0;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 }

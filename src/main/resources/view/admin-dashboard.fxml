@@ -34,6 +34,9 @@
                     <Label fx:id="moviesNav" styleClass="admin-nav-item" text="🎬 Movie Management"/>
                     <Label fx:id="bookingsNav" styleClass="admin-nav-item" text="🎫 Bookings Management"/>
                     <Label fx:id="paymentsNav" styleClass="admin-nav-item" text="💳 Payments Management"/>
+                    <Label fx:id="hallsNav"
+                           styleClass="admin-nav-item"
+                           text="🏛 Hall Management"/>
                 </children>
             </VBox>
 
@@ -175,6 +178,43 @@
                         </columns>
                     </TableView>
                 </VBox>
+                <!-- HALL MANAGEMENT SECTION -->
+                <VBox fx:id="hallSection"
+                      spacing="20.0"
+                      visible="false">
+
+                    <Label style="-fx-text-fill: white;
+                   -fx-font-size: 20px;
+                   -fx-font-weight: bold;"
+                           text="Hall Management"/>
+
+                    <VBox spacing="15"
+                          styleClass="admin-card"
+                          maxWidth="450">
+
+                        <Label text="Assign Movie To Hall"
+                               styleClass="admin-card-title"/>
+
+                        <ComboBox fx:id="movieComboBox"
+                                  promptText="Select Movie"/>
+
+                        <ComboBox fx:id="hallComboBox"
+                                  promptText="Select Hall"/>
+
+                        <TextField fx:id="showtimeField"
+                                   promptText="2026-05-20 18:00:00"/>
+
+                        <TextField fx:id="priceField"
+                                   promptText="Ticket Price"/>
+
+                        <Button text="Create Showtime"
+                                styleClass="admin-button"
+                                onAction="#handleCreateShowtime"/>
+
+                    </VBox>
+
+                </VBox>
+
             </VBox>
         </HBox>
     </center>

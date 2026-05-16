@@ -82,4 +82,47 @@ public class Booking {
     public void setBookingStatus(String bookingStatus) {
         this.bookingStatus = bookingStatus;
     }
+
+    public static class Builder {
+        private int id;
+        private int userId;
+        private int showtimeId;
+        private Timestamp bookingDate;
+        private double totalAmount;
+        private String bookingStatus;
+
+        public Builder setId(int id) {
+            this.id = id;
+            return this;
+        }
+
+        public Builder setUserId(int userId) {
+            this.userId = userId;
+            return this;
+        }
+
+        public Builder setShowtimeId(int showtimeId) {
+            this.showtimeId = showtimeId;
+            return this;
+        }
+
+        public Builder setBookingDate(Timestamp bookingDate) {
+            this.bookingDate = bookingDate;
+            return this;
+        }
+
+        public Builder setTotalAmount(double totalAmount) {
+            this.totalAmount = totalAmount;
+            return this;
+        }
+
+        public Builder setBookingStatus(String bookingStatus) {
+            this.bookingStatus = bookingStatus;
+            return this;
+        }
+
+        public Booking build() {
+            return new Booking(id, userId, showtimeId, bookingDate, totalAmount, bookingStatus);
+        }
+    }
 }

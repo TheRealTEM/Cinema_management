@@ -38,10 +38,23 @@ public class LoginController {
 
             try {
 
+                String dashboardPath;
+
+                if(user.getRole().equals("ADMIN")) {
+
+                    dashboardPath =
+                            "/view/admin-dashboard.fxml";
+
+                } else {
+
+                    dashboardPath =
+                            "/view/dashboard.fxml";
+                }
+
                 FXMLLoader loader =
                         new FXMLLoader(
                                 getClass().getResource(
-                                        "/view/dashboard.fxml"
+                                        dashboardPath
                                 )
                         );
 

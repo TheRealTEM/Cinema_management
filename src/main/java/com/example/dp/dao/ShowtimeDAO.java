@@ -195,5 +195,135 @@ public class ShowtimeDAO {
         return null;
     }
 
+    public void createShowtime(
+            int movieId,
+            int hallId,
+            LocalDateTime startTime,
+            LocalDateTime endTime,
+            BigDecimal basePrice
+    ) {
+
+        String query =
+                "INSERT INTO showtimes " +
+                        "(movie_id, hall_id, start_time, end_time, base_price, status) " +
+                        "VALUES (?, ?, ?, ?, ?, 'AVAILABLE')";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
+
+            statement.setInt(
+                    1,
+                    movieId
+            );
+
+            statement.setInt(
+                    2,
+                    hallId
+            );
+
+            statement.setTimestamp(
+                    3,
+                    java.sql.Timestamp.valueOf(
+                            startTime
+                    )
+            );
+
+            statement.setTimestamp(
+                    4,
+                    java.sql.Timestamp.valueOf(
+                            endTime
+                    )
+            );
+
+            statement.setBigDecimal(
+                    5,
+                    basePrice
+            );
+
+            statement.executeUpdate();
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
+    public List<String> getAllHallNames() {
+
+        List<String> halls =
+                new ArrayList<>();
+
+        String query =
+                "SELECT hall_name FROM cinema_halls";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            while(resultSet.next()) {
+
+                halls.add(
+                        resultSet.getString(
+                                "hall_name"
+                        )
+                );
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return halls;
+    }
+
+    public int getHallIdByName(
+            String hallName
+    ) {
+
+        String query =
+                "SELECT id FROM cinema_halls " +
+                        "WHERE hall_name = ?";
+
+        try {
+
+            PreparedStatement statement =
+                    connection.prepareStatement(
+                            query
+                    );
+
+            statement.setString(
+                    1,
+                    hallName
+            );
+
+            ResultSet resultSet =
+                    statement.executeQuery();
+
+            if(resultSet.next()) {
+
+                return resultSet.getInt(
+                        "id"
+                );
+            }
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+
+        return -1;
+    }
+
 
 }

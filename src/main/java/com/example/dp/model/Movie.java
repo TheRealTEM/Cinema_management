@@ -148,4 +148,34 @@ public class Movie {
     public String toString() {
         return title;
     }
+
+    public static class Builder {
+        private int id;
+        private String title;
+        private String description;
+        private String genre;
+        private int durationMinutes;
+        private String rating;
+        private String language;
+        private LocalDate releaseDate;
+        private String posterPath;
+        private String status;
+        private Timestamp createdAt;
+
+        public Builder setId(int id) { this.id = id; return this; }
+        public Builder setTitle(String title) { this.title = title; return this; }
+        public Builder setDescription(String description) { this.description = description; return this; }
+        public Builder setGenre(String genre) { this.genre = genre; return this; }
+        public Builder setDurationMinutes(int durationMinutes) { this.durationMinutes = durationMinutes; return this; }
+        public Builder setRating(String rating) { this.rating = rating; return this; }
+        public Builder setLanguage(String language) { this.language = language; return this; }
+        public Builder setReleaseDate(LocalDate releaseDate) { this.releaseDate = releaseDate; return this; }
+        public Builder setPosterPath(String posterPath) { this.posterPath = posterPath; return this; }
+        public Builder setStatus(String status) { this.status = status; return this; }
+        public Builder setCreatedAt(Timestamp createdAt) { this.createdAt = createdAt; return this; }
+
+        public Movie build() {
+            return new Movie(id, title, description, genre, durationMinutes, rating, language, releaseDate, posterPath, status, createdAt);
+        }
+    }
 }
