@@ -1,7 +1,8 @@
 package com.example.dp.controller;
 
 import com.example.dp.dao.BookingDAO;
-import com.example.dp.dao.MovieDAO;
+import com.example.dp.proxy.CachedMovieProxy;
+import com.example.dp.service.MovieService;
 import com.example.dp.dao.PaymentDAO;
 import com.example.dp.model.Booking;
 import com.example.dp.model.Movie;
@@ -96,7 +97,7 @@ public class AdminDashboardController implements Initializable {
     @FXML
     private Label paymentsNav;
 
-    private MovieDAO movieDAO;
+    private MovieService movieService;
 
     private BookingDAO bookingDAO;
 
@@ -107,7 +108,7 @@ public class AdminDashboardController implements Initializable {
             URL url,
             ResourceBundle resourceBundle
     ) {
-        movieDAO = new MovieDAO();
+        movieService = new CachedMovieProxy();
         bookingDAO = new BookingDAO();
         paymentDAO = new PaymentDAO();
 
@@ -269,7 +270,7 @@ public class AdminDashboardController implements Initializable {
         try {
             int totalBookings = bookingDAO.getTotalBookingsCount();
             double totalRevenue = paymentDAO.getTotalRevenuePaid();
-            int activeMovies = movieDAO.getActiveMoviesCount();
+            int activeMovies = movieService.getActiveMoviesCount();
             int pendingBookings = bookingDAO.getPendingBookingsCount();
 
             totalBookingsLabel.setText(String.valueOf(totalBookings));
@@ -296,7 +297,7 @@ public class AdminDashboardController implements Initializable {
     private void loadMoviesData() {
         try {
             System.out.println("DEBUG: Loading movies data from database...");
-            List<Movie> movies = movieDAO.getAllMovies();
+            List<Movie> movies = movieService.getAllMovies();
             System.out.println("DEBUG: Retrieved " + movies.size() + " movies from database");
 
             if (movies.isEmpty()) {
@@ -384,7 +385,7 @@ public class AdminDashboardController implements Initializable {
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 try {
-                    boolean success = movieDAO.deleteMovie(selected.getId());
+                    boolean success = movieService.deleteMovie(selected.getId());
                     if (success) {
                         System.out.println("DEBUG: Movie deleted successfully: " + selected.getTitle());
                         loadMoviesData();

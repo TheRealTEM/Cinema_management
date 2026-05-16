@@ -10,7 +10,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MovieDAO {
+import com.example.dp.service.MovieService;
+
+public class MovieDAO implements MovieService {
 
     private Connection connection;
 

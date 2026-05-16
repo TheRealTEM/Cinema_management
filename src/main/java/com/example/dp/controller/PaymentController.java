@@ -4,8 +4,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import com.example.dp.dao.BookingDAO;
-import com.example.dp.dao.SeatDAO;
+import com.example.dp.decorator.*;
+import com.example.dp.facade.CinemaFacade;
+import java.util.Arrays;
+import java.util.List;
+import javafx.scene.control.CheckBox;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -28,30 +31,41 @@ public class PaymentController {
             paymentMethodComboBox;
 
     @FXML
+    private CheckBox popcornCheckBox;
+
+    @FXML
+    private CheckBox vipLoungeCheckBox;
+
+    @FXML
     private Button confirmPaymentButton;
 
 
 
     private int showtimeId;
-
-    private final BookingDAO bookingDAO =
-            new BookingDAO();
-
-    private final SeatDAO seatDAO =
-            new SeatDAO();
+    private final CinemaFacade cinemaFacade = new CinemaFacade();
 
 
 
     @FXML
     public void initialize() {
+        paymentMethodComboBox.getItems().addAll("CARD", "CASH", "WALLET");
+    }
 
-        paymentMethodComboBox
-                .getItems()
-                .addAll(
-                        "CARD",
-                        "CASH",
-                        "WALLET"
-                );
+    @FXML
+    private void handleAddonsChange() {
+        // Demonstrate Decorator Pattern
+        double basePrice = Double.parseDouble(totalLabel.getText().replace("$", ""));
+        Ticket myTicket = new BaseTicket(movieTitleLabel.getText(), basePrice);
+
+        if (popcornCheckBox != null && popcornCheckBox.isSelected()) {
+            myTicket = new PopcornDecorator(myTicket);
+        }
+        if (vipLoungeCheckBox != null && vipLoungeCheckBox.isSelected()) {
+            myTicket = new VIPLoungeDecorator(myTicket);
+        }
+
+        System.out.println("[DECORATOR] Current Ticket: " + myTicket.getDescription());
+        // For demonstration, we could update the totalLabel here if we had the original base price stored
     }
 
     @FXML
@@ -70,59 +84,25 @@ public class PaymentController {
             return;
         }
 
-        double total =
-                Double.parseDouble(
-                        totalLabel
-                                .getText()
-                                .replace("$", "")
-                );
+        double total = Double.parseDouble(totalLabel.getText().replace("$", ""));
+        // Using the Decorator to calculate final total
+        Ticket finalTicket = new BaseTicket(movieTitleLabel.getText(), total);
+        if (popcornCheckBox != null && popcornCheckBox.isSelected()) finalTicket = new PopcornDecorator(finalTicket);
+        if (vipLoungeCheckBox != null && vipLoungeCheckBox.isSelected()) finalTicket = new VIPLoungeDecorator(finalTicket);
+        
+        double finalAmount = finalTicket.getPrice();
+        String seatsText = seatsLabel.getText().replace("Seats: ", "");
+        List<String> seatList = Arrays.asList(seatsText.split(", "));
 
-        int userId = com.example.dp.state.Session.getInstance().getLoggedInUser() != null ? 
-                     com.example.dp.state.Session.getInstance().getLoggedInUser().getId() : 1;
-        int bookingId =
-                bookingDAO.createBooking(
-                        userId,
-                        showtimeId,
-                        total
-                );
+        // Using the Facade to handle the entire complex process
+        boolean success = cinemaFacade.purchaseTicket(showtimeId, seatList, finalAmount, paymentMethod);
 
-        if(bookingId == -1) {
-
-            System.out.println(
-                    "Booking failed"
-            );
-
+        if(!success) {
+            System.out.println("Booking failed via Facade");
             return;
         }
 
-        String seatsText =
-                seatsLabel
-                        .getText()
-                        .replace("Seats: ", "");
-
-        String[] seats =
-                seatsText.split(", ");
-
-        for(String seat : seats) {
-
-            int seatId =
-                    seatDAO.getSeatIdBySeatNumber(
-                            seat
-                    );
-
-            if(seatId != -1) {
-
-                bookingDAO.saveBookedSeat(
-                        bookingId,
-                        showtimeId,
-                        seatId
-                );
-            }
-        }
-
-        System.out.println(
-                "Booking saved successfully"
-        );
+        System.out.println("Booking successfully processed via Facade. Final Description: " + finalTicket.getDescription());
 
         try {
 

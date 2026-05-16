@@ -20,6 +20,12 @@ public class BookingDAO {
                     .getConnection();
 
     public int createBooking(
+            Booking booking
+    ) {
+        return createBooking(booking.getUserId(), booking.getShowtimeId(), booking.getTotalAmount());
+    }
+
+    public int createBooking(
             int userId,
             int showtimeId,
             double totalAmount
