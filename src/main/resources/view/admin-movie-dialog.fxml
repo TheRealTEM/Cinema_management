@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="820.0" prefWidth="900.0"
+            styleClass="root-pane"
+            stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.dp.controller.AdminMovieDialogController">
+
+    <!-- BACK BUTTON (top-left) -->
+    <Hyperlink text="← Back" onAction="#handleCancel"
+               AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="30.0"
+               styleClass="movie-dialog-back"/>
+
+    <!-- SCROLLABLE CARD CONTAINER -->
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED"
+                styleClass="movies-scroll"
+                AnchorPane.topAnchor="50.0" AnchorPane.bottomAnchor="0.0"
+                AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+
+        <VBox spacing="14.0" styleClass="movie-dialog-card"
+              style="-fx-margin: 0 100 20 100;">
+            <padding>
+                <Insets top="25.0" bottom="25.0" left="60.0" right="60.0"/>
+            </padding>
+
+            <!-- MOVIE NAME (full-width with icon placeholder) -->
+            <HBox styleClass="movie-dialog-title-row" spacing="12.0" alignment="CENTER_LEFT">
+                <Label styleClass="movie-dialog-icon" text="✉"/>
+                <TextField fx:id="titleField" promptText="Movie name"
+                           styleClass="movie-dialog-input,movie-dialog-title-input"
+                           HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+            </HBox>
+
+            <!-- GENRE + DURATION row -->
+            <HBox spacing="16.0">
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Genre" styleClass="movie-dialog-label"/>
+                    <TextField fx:id="genreField" promptText=""
+                               styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"/>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Duration (min)" styleClass="movie-dialog-label"/>
+                    <TextField fx:id="durationField" promptText=""
+                               styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"/>
+                </VBox>
+            </HBox>
+
+            <!-- DESCRIPTION (tall) -->
+            <VBox spacing="5.0">
+                <Label text="Description" styleClass="movie-dialog-label"/>
+                <TextArea fx:id="descriptionArea" promptText=""
+                          styleClass="movie-dialog-textarea"
+                          prefHeight="120.0" maxWidth="Infinity" wrapText="true"/>
+            </VBox>
+
+            <!-- LANGUAGE + RELEASE DATE row -->
+            <HBox spacing="16.0">
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Language" styleClass="movie-dialog-label"/>
+                    <TextField fx:id="languageField" promptText=""
+                               styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"/>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Release Date" styleClass="movie-dialog-label"/>
+                    <DatePicker fx:id="releaseDateField"
+                                styleClass="movie-dialog-datepicker" maxWidth="Infinity" prefHeight="50.0"/>
+                </VBox>
+            </HBox>
+
+            <!-- RATING + STATUS row -->
+            <HBox spacing="16.0">
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Rating" styleClass="movie-dialog-label"/>
+                    <TextField fx:id="ratingField" promptText="e.g. PG-13, R, G"
+                               styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"/>
+                </VBox>
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Status" styleClass="movie-dialog-label"/>
+                    <ComboBox fx:id="statusCombo" maxWidth="Infinity" prefHeight="50.0"
+                              styleClass="movie-dialog-combo"/>
+                </VBox>
+            </HBox>
+
+            <!-- POSTER PATH + ADD POSTER button -->
+            <HBox spacing="16.0" alignment="BOTTOM_LEFT">
+                <VBox spacing="5.0" HBox.hgrow="ALWAYS">
+                    <Label text="Poster Path" styleClass="movie-dialog-label"/>
+                    <TextField fx:id="posterPathField" promptText="Select an image..."
+                               styleClass="movie-dialog-input" maxWidth="Infinity" prefHeight="50.0"
+                               editable="false"/>
+                </VBox>
+                <Button text="Add Poster" onAction="#handleSelectImage"
+                        styleClass="movie-dialog-poster-btn" prefHeight="50.0" prefWidth="140.0"/>
+            </HBox>
+
+            <!-- SAVE / DELETE BUTTONS -->
+            <HBox spacing="12.0">
+                <Button fx:id="saveButton" text="Add Movie" onAction="#handleSave"
+                        styleClass="movie-dialog-save-btn" maxWidth="Infinity" prefHeight="48.0"
+                        HBox.hgrow="ALWAYS"/>
+                <Button fx:id="deleteButton" text="Delete Movie" onAction="#handleDelete"
+                        styleClass="movie-dialog-delete-btn" prefHeight="48.0" prefWidth="150.0"
+                        visible="false" managed="false"/>
+            </HBox>
+
+        </VBox>
+    </ScrollPane>
+</AnchorPane>
